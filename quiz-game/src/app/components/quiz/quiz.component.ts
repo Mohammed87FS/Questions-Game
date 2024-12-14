@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { QuestionsService } from '../../services/questions.service';
+
+declare var YT: any; // Declare YT for YouTube API
 
 @Component({
   selector: 'app-quiz',
@@ -10,23 +12,108 @@ import { QuestionsService } from '../../services/questions.service';
   styleUrls: ['./quiz.component.css']
 })
 export class QuizComponent implements OnInit {
+  playerStart: any;
+  playerSuspense: any;
+  playerWrong: any;
+  playerWaiting: any;
+  playerCorrect: any;
+
   allQuestions: any[] = [];
   selectedQuestions: any[] = [];
   currentQuestionIndex: number = 0;
   gameOver: boolean = false;
   totalQuestions: number = 15;
 
-  // New state variables
-  selectedIndex: number | null = null; // which option was selected
-  pendingCheck: boolean = false;        // true while waiting the 5 seconds
-  showResult: boolean = false;          // true when revealing correctness
-  correctAnswerSelected: boolean = false; // was the selected answer correct?
+  // State variables for answer checking and UI feedback
+  selectedIndex: number | null = null;
+  pendingCheck: boolean = false;
+  showResult: boolean = false;
+  correctAnswerSelected: boolean = false;
 
-  constructor(private questionsService: QuestionsService) {}
+  constructor(
+    private questionsService: QuestionsService,
+    @Inject(PLATFORM_ID) private platformId: Object // Inject platform ID
+  ) {}
 
   ngOnInit(): void {
     this.allQuestions = this.questionsService.getAllQuestions();
     this.selectedQuestions = this.shuffleArray(this.allQuestions).slice(0, this.totalQuestions);
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadYouTubeAPI();
+    }
+  }
+
+  loadYouTubeAPI() {
+    const script = document.createElement('script');
+    script.src = 'https://www.youtube.com/iframe_api';
+    script.async = true;
+    document.body.appendChild(script);
+
+    (window as any).onYouTubeIframeAPIReady = () => {
+      this.setupPlayers();
+    };
+  }
+
+  setupPlayers() {
+    this.playerStart = new YT.Player('playerStart', {
+      videoId: 'XSH3x22jorM',
+      playerVars: { autoplay: 0, controls: 0 }
+    });
+
+    this.playerSuspense = new YT.Player('playerSuspense', {
+      videoId: 'sMNYHiV68AM',
+      playerVars: { autoplay: 0, controls: 0, loop: 1, playlist: 'sMNYHiV68AM' }
+    });
+
+    this.playerWrong = new YT.Player('playerWrong', {
+      videoId: 'abZSVXO3XZE',
+      playerVars: { autoplay: 0, controls: 0 }
+    });
+
+    this.playerWaiting = new YT.Player('playerWaiting', {
+      videoId: 'x4eMmc9d8vk',
+      playerVars: { autoplay: 0, controls: 0 }
+    });
+
+    this.playerCorrect = new YT.Player('playerCorrect', {
+      videoId: '8d7hfOtKItw',
+      playerVars: { autoplay: 0, controls: 0 }
+    });
+  }
+
+  // Audio controls
+  playStartAudio() {
+    this.stopAllAudio();
+    this.playerStart?.playVideo();
+  }
+
+  playSuspenseAudio() {
+    this.stopAllAudio();
+    this.playerSuspense?.playVideo();
+  }
+
+  playWrongAudio() {
+    this.stopAllAudio();
+    this.playerWrong?.playVideo();
+  }
+
+  playWaitingAudio() {
+    this.stopAllAudio();
+    this.playerWaiting?.playVideo();
+  }
+
+  playCorrectAudio() {
+    this.stopAllAudio();
+    this.playerCorrect?.playVideo();
+  }
+
+  stopAllAudio() {
+    this.playerStart?.stopVideo();
+    this.playerSuspense?.stopVideo();
+    this.playerWrong?.stopVideo();
+    this.playerWaiting?.stopVideo();
+    this.playerCorrect?.stopVideo();
   }
 
   shuffleArray(array: any[]): any[] {
@@ -43,32 +130,23 @@ export class QuizComponent implements OnInit {
   }
 
   selectAnswer(index: number) {
-    // User clicked an option
     this.selectedIndex = index;
-    this.pendingCheck = true;  // Turn button orange immediately
-    this.showResult = false; 
+    this.pendingCheck = true;
+    this.showResult = false;
     this.correctAnswerSelected = false;
 
-    // After 5 seconds, check correctness
     setTimeout(() => {
       this.revealAnswer();
     }, 5000);
   }
 
   revealAnswer() {
-    // Now we decide if correct or not
     const chosenOption = this.currentQuestion.options[this.selectedIndex!];
-    if (chosenOption === this.currentQuestion.answer) {
-      this.correctAnswerSelected = true;   // Will turn the button green
-    } else {
-      this.correctAnswerSelected = false;  // Will turn the button red
-    }
+    this.correctAnswerSelected = chosenOption === this.currentQuestion.answer;
 
     this.pendingCheck = false;
     this.showResult = true;
 
-    // If correct, move to next question after a short delay
-    // If not correct, game over
     setTimeout(() => {
       if (this.correctAnswerSelected) {
         this.currentQuestionIndex++;
@@ -79,10 +157,9 @@ export class QuizComponent implements OnInit {
         this.gameOver = true;
       }
 
-      // Reset states for next question or for game over screen
       this.selectedIndex = null;
       this.showResult = false;
-    }, 2000); // 2 seconds to show green/red before proceeding
+    }, 2000);
   }
 
   restart() {
