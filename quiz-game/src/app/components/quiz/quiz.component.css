@@ -1,31 +1,132 @@
+
+  :host {
+    display: block;
+    width: 100vw;
+    height: 200vh;
+    background: #000000; 
+  }
+
 .quiz-container {
-    max-width: 600px;
-    margin: 50px auto;
+    position: relative;
+    width: 1000px;
+    height: 500px;
+    margin: 0px auto;
     text-align: center;
-    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #001f3f 0%, #000000 100%);
+    border: 3px solid #00aaff;
+    border-radius: 20px;
+    box-shadow: 0 0 20px #00ffff;
+    padding: 50px;
+    color: #000000;
+  }
+  
+  .quiz-container h2 {
+    margin: 20px 0;
+    font-size: 24px;
+    color: #ffdd00;
+  }
+  
+  .quiz-container p {
+    font-size: 22px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #00aaff;
+    border-radius: 10px;
+    padding: 20px;
+    display: inline-block;
+    max-width: 80%;
+    color: #ffffff;
   }
   
   .options {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 15px;
+    margin-top: 30px;
+    align-items: center;
   }
   
   .options button {
-    padding: 10px 20px;
-    font-size: 16px;
+    width: 70%;
+    padding: 15px;
+    font-size: 20px;
     cursor: pointer;
+    text-align: left;
+    background: #002244;
+    border: 3px solid #00aaff;
+    border-radius: 25px;
+    color: #ffffff;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  .options button:hover {
+    background: #003366;
+    box-shadow: 0 0 10px #00ffff;
+  }
+  
+  .options button::before {
+    content: "";
+    width: 40px;
+    height: 40px;
+    background: #00aaff;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    left: -50px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  /* New states */
+  .selected-pending {
+    background: orange !important;
+    box-shadow: 0 0 10px orange;
+  }
+  
+  .correct-answer {
+    background: green !important;
+    box-shadow: 0 0 10px green;
+  }
+  
+  .wrong-answer {
+    background: red !important;
+    box-shadow: 0 0 10px red;
   }
   
   .game-over-screen {
     text-align: center;
     margin-top: 50px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 3px solid #ff0000;
+    box-shadow: 0 0 20px #ff0000;
+    border-radius: 20px;
+    padding: 40px;
+    color: #ffffff;
+  }
+  
+  .game-over-screen h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #ff0000;
+  }
+  
+  .game-over-screen p {
+    font-size: 20px;
+    margin-bottom: 30px;
   }
   
   .game-over-screen button {
     padding: 10px 20px;
-    font-size: 16px;
+    font-size: 18px;
     cursor: pointer;
+    background: #002244;
+    border: 3px solid #00aaff;
+    border-radius: 25px;
+    color: #ffffff;
+    transition: all 0.3s ease;
   }
   
+  .game-over-screen button:hover {
+    background: #003366;
+    box-shadow: 0 0 10px #00ffff;
+  }

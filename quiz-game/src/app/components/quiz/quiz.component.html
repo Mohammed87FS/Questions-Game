@@ -3,7 +3,14 @@
     <p>{{currentQuestion?.question}}</p>
   
     <div class="options">
-      <button *ngFor="let opt of currentQuestion?.options" (click)="selectAnswer(opt)">
+      <button *ngFor="let opt of currentQuestion?.options; let i = index"
+              [ngClass]="{
+                'selected-pending': selectedIndex === i && pendingCheck,
+                'correct-answer': selectedIndex === i && showResult && correctAnswerSelected,
+                'wrong-answer': selectedIndex === i && showResult && !correctAnswerSelected
+              }"
+              (click)="selectAnswer(i)"
+              [disabled]="pendingCheck || showResult">
         {{ opt }}
       </button>
     </div>
