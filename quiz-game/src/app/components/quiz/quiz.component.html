@@ -1,34 +1,32 @@
 <div class="quiz-container" *ngIf="!gameOver; else gameOverTemplate">
-    <h2>Question {{currentQuestionIndex + 1}} of {{totalQuestions}}</h2>
-    <p>{{currentQuestion?.question}}</p>
-  
-    <div class="options">
-      <button *ngFor="let opt of currentQuestion?.options; let i = index"
-              [ngClass]="{
-                'selected-pending': selectedIndex === i && pendingCheck,
-                'correct-answer': selectedIndex === i && showResult && correctAnswerSelected,
-                'wrong-answer': selectedIndex === i && showResult && !correctAnswerSelected
-              }"
-              (click)="selectAnswer(i)"
-              [disabled]="pendingCheck || showResult">
-        {{ opt }}
-      </button>
-    </div>
-  </div>
-  
-  <ng-template #gameOverTemplate>
-    <div class="game-over-screen">
-      <h2>Game Over</h2>
-      <p *ngIf="currentQuestionIndex >= totalQuestions">Congratulations! You answered all correctly!</p>
-      <p *ngIf="currentQuestionIndex < totalQuestions">You made it to question {{currentQuestionIndex + 1}}.</p>
-      <button (click)="restart()">Restart</button>
-    </div>
-  
-<div id="playerStart" style="display:none;"></div>
-<div id="playerSuspense" style="display:none;"></div>
-<div id="playerWrong" style="display:none;"></div>
-<div id="playerWaiting" style="display:none;"></div>
-<div id="playerCorrect" style="display:none;"></div>
+  <h2>السؤال {{currentQuestionIndex + 1}} من {{totalQuestions}}</h2>
+  <p>{{currentQuestion?.question}}</p>
 
-  </ng-template>
-  
+  <div class="options">
+    <button *ngFor="let opt of currentQuestion?.options; let i = index"
+            [ngClass]="{
+              'selected-pending': selectedIndex === i && pendingCheck,
+              'correct-answer': selectedIndex === i && showResult && correctAnswerSelected,
+              'wrong-answer': selectedIndex === i && showResult && !correctAnswerSelected
+            }"
+            (click)="selectAnswer(i)"
+            [disabled]="pendingCheck || showResult">
+      {{ opt }}
+    </button>
+  </div>
+</div>
+
+<ng-template #gameOverTemplate>
+  <div class="game-over-screen">
+    <h2>انتهت اللعبة</h2>
+    <p *ngIf="currentQuestionIndex >= totalQuestions">تهانينا! لقد أجبت على جميع الأسئلة بشكل صحيح!</p>
+    <p *ngIf="currentQuestionIndex < totalQuestions">لقد وصلت إلى السؤال {{currentQuestionIndex + 1}}.</p>
+    <button (click)="restart()">إعادة البدء</button>
+  </div>
+
+  <div id="playerStart" style="display:none;"></div>
+  <div id="playerSuspense" style="display:none;"></div>
+  <div id="playerWrong" style="display:none;"></div>
+  <div id="playerWaiting" style="display:none;"></div>
+  <div id="playerCorrect" style="display:none;"></div>
+</ng-template>
