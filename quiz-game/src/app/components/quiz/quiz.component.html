@@ -1,0 +1,20 @@
+<div class="quiz-container" *ngIf="!gameOver; else gameOverTemplate">
+    <h2>Question {{currentQuestionIndex + 1}} of {{totalQuestions}}</h2>
+    <p>{{currentQuestion?.question}}</p>
+  
+    <div class="options">
+      <button *ngFor="let opt of currentQuestion?.options" (click)="selectAnswer(opt)">
+        {{ opt }}
+      </button>
+    </div>
+  </div>
+  
+  <ng-template #gameOverTemplate>
+    <div class="game-over-screen">
+      <h2>Game Over</h2>
+      <p *ngIf="currentQuestionIndex >= totalQuestions">Congratulations! You answered all correctly!</p>
+      <p *ngIf="currentQuestionIndex < totalQuestions">You made it to question {{currentQuestionIndex + 1}}.</p>
+      <button (click)="restart()">Restart</button>
+    </div>
+  </ng-template>
+  
