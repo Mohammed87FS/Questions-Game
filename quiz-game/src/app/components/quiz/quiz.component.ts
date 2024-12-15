@@ -23,7 +23,9 @@ export class QuizComponent implements OnInit {
   playerWrong: any;
   playerWaiting: any;
   playerCorrect: any;
-
+  showPopup: boolean = false;
+  popupTitle: string = '';
+  popupContent: string = '';
   displayedOptions: string[] = [];
   allQuestions: any[] = [];
   selectedQuestions: any[] = [];
@@ -143,16 +145,61 @@ export class QuizComponent implements OnInit {
     if (this.lifelinesUsed.phoneFriend) return;
     this.lifelinesUsed.phoneFriend = true;
   
-   
-    alert('اتصلت بصديقك! وقال لك أن الإجابة الصحيحة هي: ' + this.currentQuestion.answer);
+    const advice = Math.random() < 0.9 ? this.currentQuestion.answer : this.getRandomIncorrectOption();
+    this.popupTitle = 'اتصل بصديق';
+    this.popupContent = `<p>صديقك يقترح أن الإجابة الصحيحة هي: <strong>${advice}</strong></p>`;
+    this.showPopup = true;
   }
-  
   useAudiencePoll() {
     if (this.lifelinesUsed.audiencePoll) return;
     this.lifelinesUsed.audiencePoll = true;
-
-    alert('نتيجة تصويت الجمهور تشير إلى أن الإجابة الصحيحة هي: ' + this.currentQuestion.answer);
+  
+    const pollResults = this.generateAudiencePoll(this.currentQuestion.answer);
+    this.popupTitle = 'نتيجة تصويت الجمهور';
+  
+    // Generate simple bar graph HTML dynamically
+    const graphHtml = pollResults
+      .map(
+        (result) =>
+          `<div style="margin: 5px 0;">
+            <strong>${result.option}:</strong>
+            <div style="background: #2196F3; height: 20px; width: ${result.percentage}%;">
+            </div>
+            <span>${result.percentage}%</span>
+          </div>`
+      )
+      .join('');
+  
+    this.popupContent = graphHtml;
+    this.showPopup = true;
   }
+  closePopup() {
+    this.showPopup = false;
+    this.popupTitle = '';
+    this.popupContent = '';
+  }
+  
+  // Simulated poll generation
+  generateAudiencePoll(correctOption: string) {
+    const options = this.displayedOptions.map((option) => ({
+      option,
+      percentage: option === correctOption ? Math.floor(Math.random() * 50 + 50) : Math.floor(Math.random() * 30),
+    }));
+  
+    // Normalize percentages to 100%
+    const totalPercentage = options.reduce((sum, curr) => sum + curr.percentage, 0);
+    options.forEach((option) => (option.percentage = Math.round((option.percentage / totalPercentage) * 100)));
+  
+    return options;
+  }
+  
+  getRandomIncorrectOption(): string {
+    const incorrectOptions = this.displayedOptions.filter((opt) => opt !== this.currentQuestion.answer);
+    return incorrectOptions[Math.floor(Math.random() * incorrectOptions.length)];
+  }
+
+  
+  
   
   restart() {
     this.gameOver = false;

@@ -1,30 +1,54 @@
-
-
 <div class="top-tools">
+  <!-- Lifeline Section -->
   <div class="lifelines">
-   
-    <button [disabled]="lifelinesUsed.fiftyFifty" (click)="useFiftyFifty()" class="lifeline-button">
-      50 : 50
+    <button 
+      [disabled]="lifelinesUsed.fiftyFifty" 
+      (click)="useFiftyFifty()" 
+      class="lifeline-button"
+      title="50:50 - إزالة إجابتين خاطئتين">
+      🧩 50:50
     </button>
-
-    <!-- Phone a Friend -->
-    <button [disabled]="lifelinesUsed.phoneFriend" (click)="usePhoneFriend()" class="lifeline-button">
-      📞
+    <button 
+      [disabled]="lifelinesUsed.phoneFriend" 
+      (click)="usePhoneFriend()" 
+      class="lifeline-button"
+      title="اتصل بصديق">
+      📞 صديق
     </button>
-
-    <!-- Audience Poll -->
-    <button [disabled]="lifelinesUsed.audiencePoll" (click)="useAudiencePoll()" class="lifeline-button">
-      👥
+    <button 
+      [disabled]="lifelinesUsed.audiencePoll" 
+      (click)="useAudiencePoll()" 
+      class="lifeline-button"
+      title="تصويت الجمهور">
+      👥 جمهور
     </button>
   </div>
 </div>
 
-<div class="quiz-container" *ngIf="!gameOver; else gameOverTemplate">
-  <h2>السؤال {{currentQuestionIndex + 1}} من {{totalQuestions}}</h2>
-  <p>{{currentQuestion?.question}}</p>
+<!-- Floating Popup -->
+<div *ngIf="showPopup" class="floating-popup-overlay" (click)="closePopup()">
+  <div class="floating-popup" (click)="$event.stopPropagation()">
+    <h3>{{ popupTitle }}</h3>
+    <div class="popup-content" [innerHTML]="popupContent"></div>
+    <button class="close-button" (click)="closePopup()">إغلاق</button>
+  </div>
+</div>
 
+<!-- Quiz Section -->
+<div class="quiz-container" *ngIf="!gameOver; else gameOverTemplate">
+  <!-- Question Title -->
+  <div class="question-header">
+    <h1>مسابقة المليون</h1>
+    <h2>السؤال {{ currentQuestionIndex + 1 }} من {{ totalQuestions }}</h2>
+  </div>
+
+  <!-- Question Content -->
+  <p class="question">{{ currentQuestion?.question }}</p>
+
+  <!-- Options -->
   <div class="options">
     <button *ngFor="let opt of displayedOptions; let i = index"
+            class="option-button"
             [ngClass]="{
               'selected-pending': selectedIndex === i && pendingCheck,
               'correct-answer': showResult && opt === currentQuestion.answer,
@@ -37,14 +61,20 @@
   </div>
 </div>
 
+<!-- Game Over Section -->
 <ng-template #gameOverTemplate>
   <div class="game-over-screen">
-    <h2>انتهت اللعبة</h2>
-    <p *ngIf="currentQuestionIndex >= totalQuestions">تهانينا! لقد أجبت على جميع الأسئلة بشكل صحيح!</p>
-    <p *ngIf="currentQuestionIndex < totalQuestions">لقد وصلت إلى السؤال {{currentQuestionIndex + 1}}.</p>
-    <button (click)="restart()">إعادة البدء</button>
+    <h1>🎉 انتهت اللعبة 🎉</h1>
+    <p *ngIf="currentQuestionIndex >= totalQuestions">
+      تهانينا! لقد أجبت على جميع الأسئلة بشكل صحيح!
+    </p>
+    <p *ngIf="currentQuestionIndex < totalQuestions">
+      لقد وصلت إلى السؤال <strong>{{ currentQuestionIndex + 1 }}</strong>.
+    </p>
+    <button (click)="restart()" class="restart-button">إعادة اللعب 🔄</button>
   </div>
 
+  <!-- Hidden YouTube Players -->
   <div id="playerStart" style="display:none;"></div>
   <div id="playerSuspense" style="display:none;"></div>
   <div id="playerWrong" style="display:none;"></div>

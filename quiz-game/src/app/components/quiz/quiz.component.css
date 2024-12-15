@@ -9,7 +9,7 @@
 .quiz-container {
     position: relative;
     width: 1000px;
-    height: 500px;
+    height: 600px;
     margin: 0px auto;
     text-align: center;
     background: linear-gradient(135deg, #001f3f 0%, #000000 100%);
@@ -97,6 +97,43 @@
     justify-content: space-around;
     margin-bottom: 20px;
   }
+  .floating-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .floating-popup {
+    background: #1e1e1e;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    width: 350px;
+    text-align: center;
+    z-index: 1001;
+  }
+  
+  .close-button {
+    margin-top: 15px;
+    background-color: #ff3333;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .close-button:hover {
+    background-color: #cc0000;
+  }
   
   .lifeline-button {
     font-size: 1rem;
@@ -150,3 +187,103 @@
     background: #003366;
     box-shadow: 0 0 10px #00ffff;
   }
+
+.top-tools {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.lifeline-button {
+  background-color: #0066cc;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.lifeline-button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+.lifeline-button:hover:not(:disabled) {
+  background-color: #004080;
+  transform: scale(1.1);
+}
+
+/* Floating Popup */
+.floating-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.floating-popup {
+  background: #222;
+  border: 3px solid #00ffcc;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+  text-align: center;
+  color: #fff;
+}
+
+.popup-content div {
+  margin: 10px 0;
+}
+
+.close-button {
+  background-color: #ff3333;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #cc0000;
+}
+
+
+.question-header h1 {
+  font-size: 30px;
+  color: #00ffcc;
+}
+
+/* Game Over Screen */
+.game-over-screen {
+  background-color: #222;
+  border: 3px solid #ffcc00;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  color: #fff;
+}
+
+.restart-button {
+  background-color: #00cc66;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.restart-button:hover {
+  background-color: #009944;
+}
