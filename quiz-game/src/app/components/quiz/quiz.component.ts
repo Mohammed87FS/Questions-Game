@@ -1,8 +1,14 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+
+declare global {
+  interface Window {
+    YT: any;
+  }
+}
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { QuestionsService } from '../../services/questions.service';
 
-declare var YT: any; // Declare YT for YouTube API
+declare var YT: any;
 
 @Component({
   selector: 'app-quiz',
@@ -18,13 +24,23 @@ export class QuizComponent implements OnInit {
   playerWaiting: any;
   playerCorrect: any;
 
+
+  showPopup: boolean = false;
+  popupTitle: string = '';
+  popupAnswer: string = '';
+  popupContent: string = '';
+  popupType: string = '';
+
+  audiencePollData: { optionNumber: string; percentage: number }[] = [];
+
+  displayedOptions: string[] = [];
   allQuestions: any[] = [];
   selectedQuestions: any[] = [];
   currentQuestionIndex: number = 0;
   gameOver: boolean = false;
   totalQuestions: number = 15;
 
-  // State variables for answer checking and UI feedback
+  lifelinesUsed = { fiftyFifty: false, phoneFriend: false, audiencePoll: false };
   selectedIndex: number | null = null;
   pendingCheck: boolean = false;
   showResult: boolean = false;
@@ -32,18 +48,17 @@ export class QuizComponent implements OnInit {
 
   constructor(
     private questionsService: QuestionsService,
-    @Inject(PLATFORM_ID) private platformId: Object // Inject platform ID
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
     this.allQuestions = this.questionsService.getAllQuestions();
     this.selectedQuestions = this.shuffleArray(this.allQuestions).slice(0, this.totalQuestions);
-  
-    if (isPlatformBrowser(this.platformId)) {
-      this.loadYouTubeAPI();
-    }
+    this.loadCurrentQuestion();
+
+    if (isPlatformBrowser(this.platformId)) this.loadYouTubeAPI();
   }
-  
+
   loadYouTubeAPI() {
     const script = document.createElement('script');
     script.src = 'https://www.youtube.com/iframe_api';
@@ -51,71 +66,20 @@ export class QuizComponent implements OnInit {
     document.body.appendChild(script);
 
     (window as any).onYouTubeIframeAPIReady = () => {
-      this.setupPlayers();
+      if (window.YT) this.setupPlayers();
     };
   }
 
   setupPlayers() {
-    if (typeof YT === 'undefined' || !YT.Player) {
-      console.error('YouTube IFrame API not loaded');
-      return;
-    }
     this.playerStart = new YT.Player('playerStart', { videoId: 'XSH3x22jorM', playerVars: { autoplay: 0, controls: 0 } });
-    this.playerSuspense = new YT.Player('playerSuspense', { videoId: 'sMNYHiV68AM', playerVars: { autoplay: 0, controls: 0, loop: 1, playlist: 'sMNYHiV68AM' } });
+    this.playerSuspense = new YT.Player('playerSuspense', { videoId: 'sMNYHiV68AM', playerVars: { autoplay: 0, controls: 0, loop: 1 } });
     this.playerWrong = new YT.Player('playerWrong', { videoId: 'abZSVXO3XZE', playerVars: { autoplay: 0, controls: 0 } });
     this.playerWaiting = new YT.Player('playerWaiting', { videoId: 'x4eMmc9d8vk', playerVars: { autoplay: 0, controls: 0 } });
     this.playerCorrect = new YT.Player('playerCorrect', { videoId: '8d7hfOtKItw', playerVars: { autoplay: 0, controls: 0 } });
   }
 
-
-  playStartAudio() {
-    if (!this.playerStart) {
-      this.playerStart = new YT.Player('playerStart', { videoId: 'XSH3x22jorM', playerVars: { autoplay: 0, controls: 0 } });
-    }
-    this.stopAllAudio();
-    this.playerStart?.playVideo();
-  }
-
-
-  playSuspenseAudio() {
-    if (!this.playerSuspense) {
-      this.playerSuspense = new YT.Player('playerSuspense', { videoId: 'sMNYHiV68AM', playerVars: { autoplay: 0, controls: 0, loop: 1, playlist: 'sMNYHiV68AM' } });
-    }
-    this.stopAllAudio();
-    this.playerSuspense?.playVideo();
-  }
-  
-
-  playWrongAudio() {
-    this.stopAllAudio();
-    this.playerWrong?.playVideo();
-  }
-
-  playWaitingAudio() {
-    this.stopAllAudio();
-    this.playerWaiting?.playVideo();
-  }
-
-  playCorrectAudio() {
-    this.stopAllAudio();
-    this.playerCorrect?.playVideo();
-  }
-
-  stopAllAudio() {
-    this.playerStart?.stopVideo();
-    this.playerSuspense?.stopVideo();
-    this.playerWrong?.stopVideo();
-    this.playerWaiting?.stopVideo();
-    this.playerCorrect?.stopVideo();
-  }
-
-  shuffleArray(array: any[]): any[] {
-    const arr = [...array];
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
+  loadCurrentQuestion() {
+    this.displayedOptions = [...this.currentQuestion.options];
   }
 
   get currentQuestion() {
@@ -125,89 +89,155 @@ export class QuizComponent implements OnInit {
   selectAnswer(index: number) {
     this.selectedIndex = index;
     this.pendingCheck = true;
-    this.showResult = false;
-    this.correctAnswerSelected = false;
 
-    setTimeout(() => {
-      this.revealAnswer();
-    }, 5000);
+    setTimeout(() => this.revealAnswer(), 5000);
   }
 
   revealAnswer() {
-    // Check if the chosen answer is correct
     const chosenOption = this.currentQuestion.options[this.selectedIndex!];
-    this.correctAnswerSelected = (chosenOption === this.currentQuestion.answer);
-  
+    this.correctAnswerSelected = chosenOption === this.currentQuestion.answer;
+
     this.pendingCheck = false;
     this.showResult = true;
-  
-    // Highlight the correct answer and the wrong answer (if applicable)
-    const quizContainer = document.querySelector('.quiz-container');
-    const buttons = quizContainer?.querySelectorAll('button');
-  
-    // Find the correct answer's index
+
     const correctIndex = this.currentQuestion.options.findIndex(
       (option: string) => option === this.currentQuestion.answer
     );
-  
-    if (buttons) {
-      // Highlight correct answer in green
-      if (correctIndex !== -1) {
-        buttons[correctIndex].classList.add('correct-answer');
-      }
-  
-      // Highlight the wrong answer in red (only if the answer is incorrect)
-      if (!this.correctAnswerSelected && this.selectedIndex !== null) {
-        buttons[this.selectedIndex].classList.add('wrong-answer');
-      }
+
+    setTimeout(() => this.endQuestion(correctIndex), 4000);
+  }
+
+  endQuestion(correctIndex: number) {
+    if (!this.correctAnswerSelected) {
+      this.highlightCorrectAnswer(correctIndex);
     }
-  
-    // After showing the green/red feedback for 2 seconds, proceed
+
     setTimeout(() => {
-      this.endQuestion();
-    }, 4000);
-  }
-  
-  
-  highlightCorrectAnswer(correctIndex: number) {
-    const quizContainer = document.querySelector('.quiz-container'); // Restrict to the current container
-    const correctButton = quizContainer?.querySelectorAll('button')[correctIndex];
-    if (correctButton) {
-      correctButton.classList.add('correct-answer');
-    }
-  }
-  
-  
-  endQuestion() {
-    if (this.correctAnswerSelected) {
-      this.currentQuestionIndex++;
-      if (this.currentQuestionIndex >= this.totalQuestions) {
+      if (this.correctAnswerSelected) {
+        this.currentQuestionIndex++;
+        if (this.currentQuestionIndex >= this.totalQuestions) this.gameOver = true;
+      } else {
         this.gameOver = true;
       }
-    } else {
-      this.gameOver = true;
-    }
-  
-    // Reset states
+
+      this.resetState();
+    }, 2000);
+  }
+
+  highlightCorrectAnswer(correctIndex: number) {
+    const quizContainer = document.querySelector('.quiz-container');
+    const correctButton = quizContainer?.querySelectorAll('button')[correctIndex];
+    correctButton?.classList.add('correct-answer');
+  }
+
+  resetState() {
     this.selectedIndex = null;
     this.showResult = false;
+    this.loadCurrentQuestion();
+    document.querySelectorAll('button').forEach((btn) => btn.classList.remove('correct-answer', 'wrong-answer'));
+  }
+
+  useFiftyFifty() {
+    if (this.lifelinesUsed.fiftyFifty) return;
+    this.lifelinesUsed.fiftyFifty = true;
+
+    const incorrectOptions = this.displayedOptions.filter(
+      (opt) => opt !== this.currentQuestion.answer
+    );
+    while (incorrectOptions.length > 1) incorrectOptions.splice(Math.floor(Math.random() * incorrectOptions.length), 1);
+
+    this.displayedOptions = [...incorrectOptions, this.currentQuestion.answer].sort(() => Math.random() - 0.5);
+  }
+
   
-    // Remove highlights for the next question
-    const quizContainer = document.querySelector('.quiz-container');
-    quizContainer?.querySelectorAll('button').forEach((btn) => {
-      btn.classList.remove('correct-answer', 'wrong-answer');
+  usePhoneFriend() {
+    if (this.lifelinesUsed.phoneFriend) return;
+    this.lifelinesUsed.phoneFriend = true;
+
+
+    const correctIndex = this.currentQuestion.options.findIndex(
+      (opt: string) => opt === this.currentQuestion.answer
+    );
+
+    this.popupType = 'phoneFriend';
+    this.popupTitle = '📞 الاتصال بصديقة';
+    this.popupContent = `: أعتقد أن الإجابة الصحيحة هي `;
+    this.popupAnswer = ` (${correctIndex + 1}) `;
+    this.showPopup = true;
+  }
+
+
+  useAudiencePoll() {
+    if (this.lifelinesUsed.audiencePoll) return;
+    this.lifelinesUsed.audiencePoll = true;
+
+    // Generate random poll percentages for numbered options
+    const correctIndex = this.currentQuestion.options.findIndex(
+      (opt: string) => opt === this.currentQuestion.answer
+    );
+
+    this.audiencePollData = this.currentQuestion.options.map((_: string, i: number) => {
+      return {
+        optionNumber: `${i + 1}`, 
+        percentage: Math.floor(Math.random() * 60) + 10
+      };
     });
+
+    // Ensure the correct option has the highest percentage
+    this.audiencePollData[correctIndex].percentage = Math.max(
+      ...this.audiencePollData.map((data) => data.percentage)
+    );
+
+    // Normalize percentages to sum up to 100%
+    const total = this.audiencePollData.reduce((sum, item) => sum + item.percentage, 0);
+    this.audiencePollData.forEach((item) => {
+      item.percentage = Math.round((item.percentage / total) * 100);
+    });
+
+    this.popupType = 'audiencePoll';
+    this.popupTitle = '👥 تصويت الجمهور';
+    this.showPopup = true;
+  }
+
+  closePopup() {
+    this.showPopup = false;
+    this.popupTitle = '';
+    this.popupContent = '';
+    this.popupType = '';
   }
   
+  // Simulated poll generation
+  generateAudiencePoll(correctOption: string) {
+    const options = this.displayedOptions.map((option) => ({
+      option,
+      percentage: option === correctOption ? Math.floor(Math.random() * 50 + 50) : Math.floor(Math.random() * 30),
+    }));
   
+    // Normalize percentages to 100%
+    const totalPercentage = options.reduce((sum, curr) => sum + curr.percentage, 0);
+    options.forEach((option) => (option.percentage = Math.round((option.percentage / totalPercentage) * 100)));
+  
+    return options;
+  }
+  
+  getRandomIncorrectOption(): string {
+    const incorrectOptions = this.displayedOptions.filter((opt) => opt !== this.currentQuestion.answer);
+    return incorrectOptions[Math.floor(Math.random() * incorrectOptions.length)];
+  }
 
+  
+  
+  
   restart() {
     this.gameOver = false;
     this.currentQuestionIndex = 0;
     this.selectedQuestions = this.shuffleArray(this.allQuestions).slice(0, this.totalQuestions);
-    this.selectedIndex = null;
-    this.pendingCheck = false;
-    this.showResult = false;
-    this.correctAnswerSelected = false;
+    this.resetState();
+
+    window.location.reload(); 
+  }
+
+  shuffleArray(array: any[]): any[] {
+    return array.sort(() => Math.random() - 0.5);
   }
 }

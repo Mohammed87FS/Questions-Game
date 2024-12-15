@@ -9,7 +9,7 @@
 .quiz-container {
     position: relative;
     width: 1000px;
-    height: 500px;
+    height: 700px;
     margin: 0px auto;
     text-align: center;
     background: linear-gradient(135deg, #001f3f 0%, #000000 100%);
@@ -22,12 +22,12 @@
   
   .quiz-container h2 {
     margin: 20px 0;
-    font-size: 24px;
+    font-size: 30px;
     color: #ffdd00;
   }
   
   .quiz-container p {
-    font-size: 22px;
+    font-size: 30px;
     background: rgba(0, 0, 0, 0.7);
     border: 2px solid #00aaff;
     border-radius: 10px;
@@ -48,7 +48,7 @@
   .options button {
     width: 70%;
     padding: 15px;
-    font-size: 20px;
+    font-size: 27px;
     cursor: pointer;
     text-align: left;
     background: #002244;
@@ -92,6 +92,63 @@
     background: red !important;
     box-shadow: 0 0 10px red;
   }
+  .lifelines {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  .floating-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .floating-popup {
+    background: #1e1e1e;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    width: 350px;
+    text-align: center;
+    z-index: 1001;
+  }
+  
+  .close-button {
+    margin-top: 15px;
+    background-color: #ff3333;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .close-button:hover {
+    background-color: #cc0000;
+  }
+  
+  .lifeline-button {
+    font-size: 1rem;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #ffd700;
+    border: 2px solid #000;
+    border-radius: 5px;
+    color: #000;
+  }
+  
+  .lifeline-button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+  }
   
   .game-over-screen {
     text-align: center;
@@ -130,3 +187,253 @@
     background: #003366;
     box-shadow: 0 0 10px #00ffff;
   }
+
+.top-tools {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.lifeline-button {
+  background-color: #095198;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 10px;
+  font-size: 27px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.lifeline-button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+.lifeline-button:hover:not(:disabled) {
+  background-color: #139fae;
+  transform: scale(1.01);
+}
+
+/* Floating Popup */
+.floating-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.floating-popup {
+  background: #222;
+  border: 3px solid #003cff;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(44, 1, 93, 0.5);
+  text-align: center;
+  color: #fff;
+}
+
+.popup-content div {
+  margin: 10px 0;
+  color: #fff;
+}
+.popup-answer div {
+  margin: 10px 0;
+  color: #10d910;
+}
+
+.close-button {
+  background-color: #ff3333;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #cc0000;
+}
+
+
+.question-header h1 {
+  font-size: 50px;
+  color: #ffa600;
+}
+
+/* Game Over Screen */
+.game-over-screen {
+  background-color: #222;
+  border: 3px solid #290370;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  color: #fff;
+}
+
+.restart-button {
+  background-color: #00cc66;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.restart-button:hover {
+  background-color: #009944;
+}
+
+
+/* Floating Popup */
+.floating-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.floating-popup {
+  background: #222;
+  border: 3px solid #00ffcc;
+  padding: 25px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+  color: #fff;
+  max-width: 400px;
+}
+
+.poll-results {
+  margin-top: 15px;
+}
+
+.poll-bar-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.poll-option {
+  flex: 0 0 20%;
+  text-align: left;
+}
+
+.poll-bar {
+  flex: 0 1 auto;
+  height: 20px;
+  background: #00ccff;
+  border-radius: 5px;
+  transition: width 0.5s ease-in-out;
+}
+
+.poll-percentage {
+  flex: 0 0 15%;
+  text-align: right;
+}
+
+.phone-friend-result p {
+  font-size: 18px;
+  color: #ffffff;
+}
+
+.close-button {
+  margin-top: 15px;
+  background-color: #ff3333;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #cc0000;
+}
+
+.game_container {
+  max-width: 3000px;
+
+  margin: 0 auto;
+  background: linear-gradient(to bottom, #020202, #010436);
+  color: #000000;
+  font-family: 'Arial', sans-serif;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  padding: 100px 100px;
+  position: relative;
+  overflow: hidden;
+  margin-top: 0px;
+
+}
+
+/* Options Section */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.option-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 80%;
+  padding: 10px 15px;
+  font-size: 18px;
+  background: #3949ab;
+  color: #fff;
+  border: 2px solid #5c6bc0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+
+/* Numbers inside options */
+.option-number {
+  color: #ffca28; /* Bright yellow for contrast */
+  font-weight: bold;
+  font-size: 22px;
+}
+
+/* Words inside options */
+.option-button span + span {
+  color: #ffffff; /* White for the words */
+  font-size: 18px;
+}
+
+/* Selected Pending */
+.selected-pending {
+  background: #ffca28;
+  color: #333;
+}
+
+/* Correct and Wrong Answers */
+.correct-answer {
+  background: #66bb6a;
+  color: #fff;
+}
+
+.wrong-answer {
+  background: #e57373;
+  color: #fff;
+}
