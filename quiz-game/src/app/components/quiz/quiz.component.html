@@ -16,7 +16,7 @@
       (click)="usePhoneFriend()" 
       class="lifeline-button"
       title="اتصل بصديق">
-      📞 صديق
+      📞 صديقة
     </button>
     <button 
       [disabled]="lifelinesUsed.audiencePoll" 
@@ -43,7 +43,9 @@
 
     <!-- Phone Friend -->
     <div *ngIf="popupType === 'phoneFriend'" class="phone-friend-result">
-      <p>{{ popupContent }}</p>
+      <p class="popup-content">{{ popupContent }}</p>
+      <p class="popup-answer">{{ popupAnswer }}</p>
+      
     </div>
 
     <button class="close-button" (click)="closePopup()">إغلاق</button>
@@ -72,10 +74,11 @@
             }"
             (click)="selectAnswer(i)"
             [disabled]="pendingCheck || showResult">
-      <span class="option-number">{{ i + 1 }}.</span> <!-- Displaying option number -->
-      {{ opt }}
+      <span class="option-number">{{ i + 1 }}.</span> <!-- Numbers -->
+      {{ opt }} <!-- Words -->
     </button>
   </div>
+  
 </div>
 </div>
 

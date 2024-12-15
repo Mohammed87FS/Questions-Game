@@ -27,6 +27,7 @@ export class QuizComponent implements OnInit {
 
   showPopup: boolean = false;
   popupTitle: string = '';
+  popupAnswer: string = '';
   popupContent: string = '';
   popupType: string = '';
 
@@ -147,20 +148,25 @@ export class QuizComponent implements OnInit {
 
     this.displayedOptions = [...incorrectOptions, this.currentQuestion.answer].sort(() => Math.random() - 0.5);
   }
+
+  
   usePhoneFriend() {
     if (this.lifelinesUsed.phoneFriend) return;
     this.lifelinesUsed.phoneFriend = true;
 
-    // Randomly mock the friend call with an option number
+
     const correctIndex = this.currentQuestion.options.findIndex(
       (opt: string) => opt === this.currentQuestion.answer
     );
 
     this.popupType = 'phoneFriend';
-    this.popupTitle = '📞 الاتصال بصديق';
-    this.popupContent = `صديقك يقول إن الإجابة الصحيحة هي الخيار "${correctIndex + 1}".`;
+    this.popupTitle = '📞 الاتصال بصديقة';
+    this.popupContent = `أعتقد أن الإجابة الصحيحة هي `;
+    this.popupAnswer = ` (${correctIndex + 1}) `;
     this.showPopup = true;
   }
+
+
   useAudiencePoll() {
     if (this.lifelinesUsed.audiencePoll) return;
     this.lifelinesUsed.audiencePoll = true;
@@ -172,7 +178,7 @@ export class QuizComponent implements OnInit {
 
     this.audiencePollData = this.currentQuestion.options.map((_: string, i: number) => {
       return {
-        optionNumber: `${i + 1}`, // Replace with "1", "2", "3", etc.
+        optionNumber: `${i + 1}`, 
         percentage: Math.floor(Math.random() * 60) + 10
       };
     });
@@ -227,6 +233,8 @@ export class QuizComponent implements OnInit {
     this.currentQuestionIndex = 0;
     this.selectedQuestions = this.shuffleArray(this.allQuestions).slice(0, this.totalQuestions);
     this.resetState();
+
+    window.location.reload(); 
   }
 
   shuffleArray(array: any[]): any[] {

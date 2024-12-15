@@ -242,6 +242,11 @@
 
 .popup-content div {
   margin: 10px 0;
+  color: #fff;
+}
+.popup-answer div {
+  margin: 10px 0;
+  color: #10d910;
 }
 
 .close-button {
@@ -344,7 +349,7 @@
 
 .phone-friend-result p {
   font-size: 18px;
-  color: #00ccff;
+  color: #ffffff;
 }
 
 .close-button {
@@ -376,4 +381,59 @@
   overflow: hidden;
   margin-top: 0px;
 
+}
+
+/* Options Section */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.option-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 80%;
+  padding: 10px 15px;
+  font-size: 18px;
+  background: #3949ab;
+  color: #fff;
+  border: 2px solid #5c6bc0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+
+/* Numbers inside options */
+.option-number {
+  color: #ffca28; /* Bright yellow for contrast */
+  font-weight: bold;
+  font-size: 22px;
+}
+
+/* Words inside options */
+.option-button span + span {
+  color: #ffffff; /* White for the words */
+  font-size: 18px;
+}
+
+/* Selected Pending */
+.selected-pending {
+  background: #ffca28;
+  color: #333;
+}
+
+/* Correct and Wrong Answers */
+.correct-answer {
+  background: #66bb6a;
+  color: #fff;
+}
+
+.wrong-answer {
+  background: #e57373;
+  color: #fff;
 }
