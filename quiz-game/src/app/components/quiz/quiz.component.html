@@ -1,3 +1,6 @@
+
+<div class="game_container">
+
 <div class="top-tools">
   <!-- Lifeline Section -->
   <div class="lifelines">
@@ -48,7 +51,6 @@
 </div>
 
 
-<!-- Quiz Section -->
 <div class="quiz-container" *ngIf="!gameOver; else gameOverTemplate">
   <!-- Question Title -->
   <div class="question-header">
@@ -59,7 +61,7 @@
   <!-- Question Content -->
   <p class="question">{{ currentQuestion?.question }}</p>
 
-  <!-- Options -->
+  <!-- Options with Numbers -->
   <div class="options">
     <button *ngFor="let opt of displayedOptions; let i = index"
             class="option-button"
@@ -70,10 +72,13 @@
             }"
             (click)="selectAnswer(i)"
             [disabled]="pendingCheck || showResult">
+      <span class="option-number">{{ i + 1 }}.</span> <!-- Displaying option number -->
       {{ opt }}
     </button>
   </div>
 </div>
+</div>
+
 
 <!-- Game Over Section -->
 <ng-template #gameOverTemplate>
