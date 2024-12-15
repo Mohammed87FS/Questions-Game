@@ -195,13 +195,13 @@
 }
 
 .lifeline-button {
-  background-color: #0066cc;
-  color: #fff;
+  background-color: #095198;
+  color: #ffffff;
   border: none;
   padding: 10px 20px;
   margin: 5px;
   border-radius: 10px;
-  font-size: 18px;
+  font-size: 27px;
   cursor: pointer;
   transition: transform 0.2s;
 }
@@ -212,8 +212,8 @@
 }
 
 .lifeline-button:hover:not(:disabled) {
-  background-color: #004080;
-  transform: scale(1.1);
+  background-color: #139fae;
+  transform: scale(1.01);
 }
 
 /* Floating Popup */
