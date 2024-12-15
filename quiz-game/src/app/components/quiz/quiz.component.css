@@ -9,7 +9,7 @@
 .quiz-container {
     position: relative;
     width: 1000px;
-    height: 600px;
+    height: 700px;
     margin: 0px auto;
     text-align: center;
     background: linear-gradient(135deg, #001f3f 0%, #000000 100%);
@@ -22,12 +22,12 @@
   
   .quiz-container h2 {
     margin: 20px 0;
-    font-size: 24px;
+    font-size: 30px;
     color: #ffdd00;
   }
   
   .quiz-container p {
-    font-size: 22px;
+    font-size: 30px;
     background: rgba(0, 0, 0, 0.7);
     border: 2px solid #00aaff;
     border-radius: 10px;
@@ -48,7 +48,7 @@
   .options button {
     width: 70%;
     padding: 15px;
-    font-size: 20px;
+    font-size: 27px;
     cursor: pointer;
     text-align: left;
     background: #002244;
