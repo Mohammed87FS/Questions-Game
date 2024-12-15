@@ -1,13 +1,34 @@
+
+
+<div class="top-tools">
+  <div class="lifelines">
+   
+    <button [disabled]="lifelinesUsed.fiftyFifty" (click)="useFiftyFifty()" class="lifeline-button">
+      50 : 50
+    </button>
+
+    <!-- Phone a Friend -->
+    <button [disabled]="lifelinesUsed.phoneFriend" (click)="usePhoneFriend()" class="lifeline-button">
+      📞
+    </button>
+
+    <!-- Audience Poll -->
+    <button [disabled]="lifelinesUsed.audiencePoll" (click)="useAudiencePoll()" class="lifeline-button">
+      👥
+    </button>
+  </div>
+</div>
+
 <div class="quiz-container" *ngIf="!gameOver; else gameOverTemplate">
   <h2>السؤال {{currentQuestionIndex + 1}} من {{totalQuestions}}</h2>
   <p>{{currentQuestion?.question}}</p>
 
   <div class="options">
-    <button *ngFor="let opt of currentQuestion?.options; let i = index"
+    <button *ngFor="let opt of displayedOptions; let i = index"
             [ngClass]="{
               'selected-pending': selectedIndex === i && pendingCheck,
-              'correct-answer': selectedIndex === i && showResult && correctAnswerSelected,
-              'wrong-answer': selectedIndex === i && showResult && !correctAnswerSelected
+              'correct-answer': showResult && opt === currentQuestion.answer,
+              'wrong-answer': showResult && selectedIndex === i && opt !== currentQuestion.answer
             }"
             (click)="selectAnswer(i)"
             [disabled]="pendingCheck || showResult">

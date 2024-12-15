@@ -92,6 +92,26 @@
     background: red !important;
     box-shadow: 0 0 10px red;
   }
+  .lifelines {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  
+  .lifeline-button {
+    font-size: 1rem;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #ffd700;
+    border: 2px solid #000;
+    border-radius: 5px;
+    color: #000;
+  }
+  
+  .lifeline-button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+  }
   
   .game-over-screen {
     text-align: center;
