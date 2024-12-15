@@ -29,10 +29,21 @@
 <div *ngIf="showPopup" class="floating-popup-overlay" (click)="closePopup()">
   <div class="floating-popup" (click)="$event.stopPropagation()">
     <h3>{{ popupTitle }}</h3>
-    <div class="popup-content" [innerHTML]="popupContent"></div>
+    <div *ngIf="popupType === 'audiencePoll'" class="poll-results">
+      <!-- Dynamic Bar Diagram -->
+      <div *ngFor="let option of audiencePollData" class="poll-bar-container">
+        <span class="poll-option">{{ option.text }}</span>
+        <div class="poll-bar" [style.width]="option.percentage + '%'"></div>
+        <span class="poll-percentage">{{ option.percentage }}%</span>
+      </div>
+    </div>
+    <div *ngIf="popupType === 'phoneFriend'" class="phone-friend-result">
+      <p>{{ popupContent }}</p>
+    </div>
     <button class="close-button" (click)="closePopup()">إغلاق</button>
   </div>
 </div>
+
 
 <!-- Quiz Section -->
 <div class="quiz-container" *ngIf="!gameOver; else gameOverTemplate">
