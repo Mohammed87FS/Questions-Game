@@ -161,7 +161,7 @@ export class QuizComponent implements OnInit {
 
     this.popupType = 'phoneFriend';
     this.popupTitle = '📞 الاتصال بصديقة';
-    this.popupContent = `أعتقد أن الإجابة الصحيحة هي `;
+    this.popupContent = `: أعتقد أن الإجابة الصحيحة هي `;
     this.popupAnswer = ` (${correctIndex + 1}) `;
     this.showPopup = true;
   }
