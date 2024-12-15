@@ -1,7 +1,7 @@
 
 <div class="game_container">
 
-<div class="top-tools">
+<div  *ngIf="!gameOver"  class="top-tools">
   <!-- Lifeline Section -->
   <div class="lifelines">
     <button 
@@ -28,7 +28,7 @@
   </div>
 </div>
 
-<div *ngIf="showPopup" class="floating-popup-overlay" (click)="closePopup()">
+<div *ngIf="showPopup"  class="floating-popup-overlay" (click)="closePopup()">
   <div class="floating-popup" (click)="$event.stopPropagation()">
     <h3>{{ popupTitle }}</h3>
 
