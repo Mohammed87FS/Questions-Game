@@ -30,7 +30,7 @@ export class QuizComponent implements OnInit {
   popupContent: string = '';
   popupType: string = '';
 
-  audiencePollData: { text: string; percentage: number }[] = [];
+  audiencePollData: { optionNumber: string; percentage: number }[] = [];
 
   displayedOptions: string[] = [];
   allQuestions: any[] = [];
@@ -151,33 +151,38 @@ export class QuizComponent implements OnInit {
     if (this.lifelinesUsed.phoneFriend) return;
     this.lifelinesUsed.phoneFriend = true;
 
+    // Randomly mock the friend call with an option number
+    const correctIndex = this.currentQuestion.options.findIndex(
+      (opt: string) => opt === this.currentQuestion.answer
+    );
+
     this.popupType = 'phoneFriend';
     this.popupTitle = '📞 الاتصال بصديق';
-    this.popupContent = `صديقك يقول إن الإجابة الصحيحة هي: "${this.currentQuestion.answer}"`;
+    this.popupContent = `صديقك يقول إن الإجابة الصحيحة هي الخيار "${correctIndex + 1}".`;
     this.showPopup = true;
   }
   useAudiencePoll() {
     if (this.lifelinesUsed.audiencePoll) return;
     this.lifelinesUsed.audiencePoll = true;
 
-    // Generate random poll percentages
-    this.audiencePollData = this.currentQuestion.options.map((option: string) => {
-      return {
-        text: option,
-        percentage: Math.floor(Math.random() * 60) + 10 // Random percentages between 10% and 70%
-      };
-    });
-
-    // Ensure the correct answer has the highest percentage
+    // Generate random poll percentages for numbered options
     const correctIndex = this.currentQuestion.options.findIndex(
       (opt: string) => opt === this.currentQuestion.answer
     );
 
+    this.audiencePollData = this.currentQuestion.options.map((_: string, i: number) => {
+      return {
+        optionNumber: `${i + 1}`, // Replace with "1", "2", "3", etc.
+        percentage: Math.floor(Math.random() * 60) + 10
+      };
+    });
+
+    // Ensure the correct option has the highest percentage
     this.audiencePollData[correctIndex].percentage = Math.max(
       ...this.audiencePollData.map((data) => data.percentage)
     );
 
-    // Normalize percentages to 100%
+    // Normalize percentages to sum up to 100%
     const total = this.audiencePollData.reduce((sum, item) => sum + item.percentage, 0);
     this.audiencePollData.forEach((item) => {
       item.percentage = Math.round((item.percentage / total) * 100);
