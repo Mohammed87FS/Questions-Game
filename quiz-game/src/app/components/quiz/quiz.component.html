@@ -95,11 +95,8 @@
     </p>
     <button (click)="restart()" class="restart-button">إعادة اللعب 🔄</button>
   </div>
-
-  <!-- Hidden YouTube Players -->
-  <div id="playerStart" style="display:none;"></div>
-  <div id="playerSuspense" style="display:none;"></div>
-  <div id="playerWrong" style="display:none;"></div>
-  <div id="playerWaiting" style="display:none;"></div>
-  <div id="playerCorrect" style="display:none;"></div>
+  <button (click)="playAudio('start')">Start Question</button>
+  <button (click)="playAudio('correct')">Correct Answer</button>
+  <button (click)="playAudio('wrong')">Wrong Answer</button>
+  <button (click)="playAudio('gaveAnswer')">Gave Answer</button>
 </ng-template>

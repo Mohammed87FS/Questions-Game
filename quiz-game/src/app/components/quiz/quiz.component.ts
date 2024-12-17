@@ -1,14 +1,6 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
-
-declare global {
-  interface Window {
-    YT: any;
-  }
-}
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { QuestionsService } from '../../services/questions.service';
-
-declare var YT: any;
 
 @Component({
   selector: 'app-quiz',
@@ -18,12 +10,11 @@ declare var YT: any;
   styleUrls: ['./quiz.component.css']
 })
 export class QuizComponent implements OnInit {
-  playerStart: any;
-  playerSuspense: any;
-  playerWrong: any;
-  playerWaiting: any;
-  playerCorrect: any;
-
+  // Audio elements
+  audioStart: HTMLAudioElement | null = null;
+  audioCorrect: HTMLAudioElement | null = null;
+  audioWrong: HTMLAudioElement | null = null;
+  audioGaveAnswer: HTMLAudioElement | null = null;
 
   showPopup: boolean = false;
   popupTitle: string = '';
@@ -56,30 +47,49 @@ export class QuizComponent implements OnInit {
     this.selectedQuestions = this.shuffleArray(this.allQuestions).slice(0, this.totalQuestions);
     this.loadCurrentQuestion();
 
-    if (isPlatformBrowser(this.platformId)) this.loadYouTubeAPI();
+    if (isPlatformBrowser(this.platformId)) this.setupAudio();
   }
 
-  loadYouTubeAPI() {
-    const script = document.createElement('script');
-    script.src = 'https://www.youtube.com/iframe_api';
-    script.async = true;
-    document.body.appendChild(script);
-
-    (window as any).onYouTubeIframeAPIReady = () => {
-      if (window.YT) this.setupPlayers();
-    };
+  // Set up audio elements
+  setupAudio(): void {
+    this.audioStart = new Audio('assets/audio/start_question.mp3');
+    this.audioCorrect = new Audio('assets/audio/correct.m4a');
+    this.audioWrong = new Audio('assets/audio/loss.m4a');
+    this.audioGaveAnswer = new Audio('assets/audio/gave_answer.m4a');
   }
 
-  setupPlayers() {
-    this.playerStart = new YT.Player('playerStart', { videoId: 'XSH3x22jorM', playerVars: { autoplay: 0, controls: 0 } });
-    this.playerSuspense = new YT.Player('playerSuspense', { videoId: 'sMNYHiV68AM', playerVars: { autoplay: 0, controls: 0, loop: 1 } });
-    this.playerWrong = new YT.Player('playerWrong', { videoId: 'abZSVXO3XZE', playerVars: { autoplay: 0, controls: 0 } });
-    this.playerWaiting = new YT.Player('playerWaiting', { videoId: 'x4eMmc9d8vk', playerVars: { autoplay: 0, controls: 0 } });
-    this.playerCorrect = new YT.Player('playerCorrect', { videoId: '8d7hfOtKItw', playerVars: { autoplay: 0, controls: 0 } });
+  playAudio(type: string): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.stopAllAudio();
+    switch (type) {
+      case 'start':
+        this.audioStart?.play();
+        break;
+      case 'correct':
+        this.audioCorrect?.play();
+        break;
+      case 'wrong':
+        this.audioWrong?.play();
+        break;
+      case 'gaveAnswer':
+        this.audioGaveAnswer?.play();
+        break;
+    }
+  }
+
+  stopAllAudio(): void {
+    [this.audioStart, this.audioCorrect, this.audioWrong, this.audioGaveAnswer].forEach((audio) => {
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+    });
   }
 
   loadCurrentQuestion() {
     this.displayedOptions = [...this.currentQuestion.options];
+    this.playAudio('start'); // Play the start question sound
   }
 
   get currentQuestion() {
@@ -90,7 +100,7 @@ export class QuizComponent implements OnInit {
     this.selectedIndex = index;
     this.pendingCheck = true;
 
-    setTimeout(() => this.revealAnswer(), 5000);
+    setTimeout(() => this.revealAnswer(), 3000);
   }
 
   revealAnswer() {
@@ -100,41 +110,32 @@ export class QuizComponent implements OnInit {
     this.pendingCheck = false;
     this.showResult = true;
 
-    const correctIndex = this.currentQuestion.options.findIndex(
-      (option: string) => option === this.currentQuestion.answer
-    );
-
-    setTimeout(() => this.endQuestion(correctIndex), 4000);
-  }
-
-  endQuestion(correctIndex: number) {
-    if (!this.correctAnswerSelected) {
-      this.highlightCorrectAnswer(correctIndex);
+    if (this.correctAnswerSelected) {
+      this.playAudio('correct'); // Play correct answer sound
+    } else {
+      this.playAudio('wrong'); // Play wrong answer sound
     }
 
-    setTimeout(() => {
-      if (this.correctAnswerSelected) {
-        this.currentQuestionIndex++;
-        if (this.currentQuestionIndex >= this.totalQuestions) this.gameOver = true;
-      } else {
-        this.gameOver = true;
-      }
-
-      this.resetState();
-    }, 2000);
+    setTimeout(() => this.endQuestion(), 4000);
   }
 
-  highlightCorrectAnswer(correctIndex: number) {
-    const quizContainer = document.querySelector('.quiz-container');
-    const correctButton = quizContainer?.querySelectorAll('button')[correctIndex];
-    correctButton?.classList.add('correct-answer');
+  endQuestion() {
+    if (this.correctAnswerSelected) {
+      this.currentQuestionIndex++;
+      if (this.currentQuestionIndex >= this.totalQuestions) {
+        this.gameOver = true;
+      }
+    } else {
+      this.gameOver = true;
+    }
+
+    this.resetState();
   }
 
   resetState() {
     this.selectedIndex = null;
     this.showResult = false;
     this.loadCurrentQuestion();
-    document.querySelectorAll('button').forEach((btn) => btn.classList.remove('correct-answer', 'wrong-answer'));
   }
 
   useFiftyFifty() {
@@ -144,51 +145,51 @@ export class QuizComponent implements OnInit {
     const incorrectOptions = this.displayedOptions.filter(
       (opt) => opt !== this.currentQuestion.answer
     );
-    while (incorrectOptions.length > 1) incorrectOptions.splice(Math.floor(Math.random() * incorrectOptions.length), 1);
 
-    this.displayedOptions = [...incorrectOptions, this.currentQuestion.answer].sort(() => Math.random() - 0.5);
+    while (incorrectOptions.length > 1) {
+      incorrectOptions.splice(Math.floor(Math.random() * incorrectOptions.length), 1);
+    }
+
+    this.displayedOptions = [...incorrectOptions, this.currentQuestion.answer].sort(
+      () => Math.random() - 0.5
+    );
   }
 
-  
   usePhoneFriend() {
     if (this.lifelinesUsed.phoneFriend) return;
     this.lifelinesUsed.phoneFriend = true;
-
 
     const correctIndex = this.currentQuestion.options.findIndex(
       (opt: string) => opt === this.currentQuestion.answer
     );
 
     this.popupType = 'phoneFriend';
-    this.popupTitle = '📞 الاتصال بصديقة';
-    this.popupContent = `: أعتقد أن الإجابة الصحيحة هي `;
+    this.popupTitle = '📞 الاتصال بصديق';
+    this.popupContent = `: أعتقد أن الإجابة الصحيحة هي الخيار `;
     this.popupAnswer = ` (${correctIndex + 1}) `;
     this.showPopup = true;
+    this.playAudio('gaveAnswer'); // Play gave answer sound
   }
-
 
   useAudiencePoll() {
     if (this.lifelinesUsed.audiencePoll) return;
     this.lifelinesUsed.audiencePoll = true;
 
-    // Generate random poll percentages for numbered options
     const correctIndex = this.currentQuestion.options.findIndex(
       (opt: string) => opt === this.currentQuestion.answer
     );
 
-    this.audiencePollData = this.currentQuestion.options.map((_: string, i: number) => {
+    this.audiencePollData = this.currentQuestion.options.map((_: any, i: number) => {
       return {
-        optionNumber: `${i + 1}`, 
-        percentage: Math.floor(Math.random() * 60) + 10
+        optionNumber: `${i + 1}`,
+        percentage: Math.floor(Math.random() * 60) + 10,
       };
     });
 
-    // Ensure the correct option has the highest percentage
     this.audiencePollData[correctIndex].percentage = Math.max(
       ...this.audiencePollData.map((data) => data.percentage)
     );
 
-    // Normalize percentages to sum up to 100%
     const total = this.audiencePollData.reduce((sum, item) => sum + item.percentage, 0);
     this.audiencePollData.forEach((item) => {
       item.percentage = Math.round((item.percentage / total) * 100);
@@ -205,36 +206,13 @@ export class QuizComponent implements OnInit {
     this.popupContent = '';
     this.popupType = '';
   }
-  
-  // Simulated poll generation
-  generateAudiencePoll(correctOption: string) {
-    const options = this.displayedOptions.map((option) => ({
-      option,
-      percentage: option === correctOption ? Math.floor(Math.random() * 50 + 50) : Math.floor(Math.random() * 30),
-    }));
-  
-    // Normalize percentages to 100%
-    const totalPercentage = options.reduce((sum, curr) => sum + curr.percentage, 0);
-    options.forEach((option) => (option.percentage = Math.round((option.percentage / totalPercentage) * 100)));
-  
-    return options;
-  }
-  
-  getRandomIncorrectOption(): string {
-    const incorrectOptions = this.displayedOptions.filter((opt) => opt !== this.currentQuestion.answer);
-    return incorrectOptions[Math.floor(Math.random() * incorrectOptions.length)];
-  }
 
-  
-  
-  
   restart() {
     this.gameOver = false;
     this.currentQuestionIndex = 0;
     this.selectedQuestions = this.shuffleArray(this.allQuestions).slice(0, this.totalQuestions);
     this.resetState();
-
-    window.location.reload(); 
+    this.playAudio('start'); // Play start sound on restart
   }
 
   shuffleArray(array: any[]): any[] {
