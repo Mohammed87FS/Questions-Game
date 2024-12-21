@@ -178,3 +178,219 @@ body {
   text-transform: uppercase; /* optional, for a retro vibe */
   letter-spacing: 1px;       /* optional, spacing between letters */
 }
+
+.start-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh; /* or 100vh if you want full page */
+  text-align: center;
+}
+
+.start-screen h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+
+
+
+
+
+.solar-system {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at center, #000, #02061a);
+  overflow: hidden;
+}
+
+
+.sun {
+  
+  z-index: 2;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, #ffcc00, #ff6600);
+  border-radius: 50%;
+  box-shadow: 0 0 50px rgba(255, 200, 0, 0.8), 0 0 100px rgba(255, 100, 0, 0.6);
+  animation: sunPulse 4s infinite ease-in-out;
+}
+
+@keyframes sunPulse {
+  0%, 100% {
+    box-shadow: 0 0 50px rgba(255, 200, 0, 0.8), 0 0 100px rgba(255, 100, 0, 0.6);
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    box-shadow: 0 0 80px rgba(255, 200, 0, 1), 0 0 120px rgba(255, 100, 0, 0.8);
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+.planet-orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  animation: orbitRotation linear infinite;
+}
+
+/* Earth Orbit */
+.earth-orbit {
+  width: 300px;
+  height: 300px;
+  animation-duration: 20s;
+}
+
+/* Mars Orbit */
+.mars-orbit {
+  width: 450px;
+  height: 450px;
+  animation-duration: 30s;
+}
+
+/* Jupiter Orbit */
+.jupiter-orbit {
+  width: 600px;
+  height: 600px;
+  animation-duration: 40s;
+}
+
+@keyframes orbitRotation {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Planets */
+.planet {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+.earth {
+  width: 30px;
+  height: 30px;
+  background: radial-gradient(circle, #00aaff, #004488);
+  box-shadow: 0 0 10px rgba(0, 170, 255, 0.8);
+}
+
+.mars {
+  width: 25px;
+  height: 25px;
+  background: radial-gradient(circle, #ff6633, #aa3300);
+  box-shadow: 0 0 10px rgba(255, 102, 51, 0.8);
+}
+
+.jupiter {
+  width: 50px;
+  height: 50px;
+  background: radial-gradient(circle, #e6ac73, #b57d52);
+  box-shadow: 0 0 15px rgba(230, 172, 115, 0.8);
+}
+
+/* Stars background */
+.stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 20% 20%, #ffffff 1px, transparent 1px),
+    radial-gradient(circle at 80% 50%, #ffffff 1px, transparent 1px),
+    radial-gradient(circle at 60% 80%, #ffffff 1px, transparent 1px),
+    radial-gradient(circle at 40% 10%, #ffffff 1px, transparent 1px);
+  background-size: 100px 100px;
+  animation: starTwinkle 5s infinite alternate;
+}
+
+@keyframes starTwinkle {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Comet animation */
+.comet {
+  position: absolute;
+  top: 20%;
+  left: -5%;
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle, #ffffff, #00ccff);
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+  animation: cometMove 10s infinite ease-in-out;
+}
+
+@keyframes cometMove {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(110vw, 90vh);
+    opacity: 0;
+  }
+}
+
+
+
+.sun {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, #ffcc00, #ff6600);
+  border-radius: 50%;
+  box-shadow: 0 0 50px rgba(255, 200, 0, 0.8), 0 0 100px rgba(255, 100, 0, 0.6);
+  animation: sunPulse 4s infinite ease-in-out;
+  cursor: pointer; 
+  transition: transform 0.3s ease-in-out;
+}
+
+.sun:hover {
+  transform: translate(-50%, -50%) scale(1.2); /* Slight scale-up on hover */
+  box-shadow: 0 0 80px rgba(255, 255, 0, 1), 0 0 120px rgba(255, 165, 0, 1);
+}
+
+
+.start-title {
+  font-size: 2.5rem;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  margin-top: 20px;
+  text-align: center;
+  animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

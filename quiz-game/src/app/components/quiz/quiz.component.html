@@ -1,4 +1,30 @@
-<div class="quiz-container">
+
+
+<div class="solar-system" *ngIf="!gameStarted">
+  <!-- The Sun -->
+  <div class="sun" (click)="onStartGame()"></div>
+  <!-- Planet orbits -->
+  <div class="planet-orbit earth-orbit">
+    <div class="planet earth"></div>
+  </div>
+
+  <div class="planet-orbit mars-orbit">
+    <div class="planet mars"></div>
+  </div>
+
+  <div class="planet-orbit jupiter-orbit">
+    <div class="planet jupiter"></div>
+  </div>
+
+
+  <div class="comets"></div>
+
+
+</div>
+
+
+
+<div *ngIf="gameStarted" class="quiz-container">
 
 
   <h5 class="question-number" >  {{ gameService.totalQuestions }} / {{ currentQuestionNumber }} السؤال</h5>

@@ -18,6 +18,10 @@ import { PopupComponent } from '../popup/popup.component';
   styleUrls: ['./quiz.component.css']
 })
 export class QuizComponent implements OnInit {
+
+  gameStarted = false;
+
+
   allQuestions: any[] = [];
 
   // Popup states
@@ -50,13 +54,22 @@ export class QuizComponent implements OnInit {
     // 1) Load from QuestionsService
     this.allQuestions = this.questionsService.getAllQuestions();  // <— Key fix
 
-    // 2) Shuffle the answers in each question
-    this.shuffleAllQuestions();  
+  }
 
-    // 3) Initialize the game with the now-shuffled questions
+  onStartGame() {
+    // Shuffle the options for each question if you want random answer orders
+    this.shuffleAllQuestions();
+
+    // Now actually initialize the game
     this.gameService.initGame(this.allQuestions);
+
+    // User has started => reveal the quiz
+    this.gameStarted = true;
+
+    // Because the user clicked "Start," we can now safely try to play audio
     this.audioService.playAudio('start');
 
+    // Set initial question number etc.
     this.currentQuestionNumber = this.gameService.currentQuestionIndex + 1;
     this.totalCorrect = 0;
   }
@@ -218,6 +231,7 @@ export class QuizComponent implements OnInit {
 
     // 2) Re-init the game
     this.gameService.initGame(this.allQuestions);
+    this.gameStarted = true; 
     this.audioService.playAudio('start');
 
     // 3) Reset everything
