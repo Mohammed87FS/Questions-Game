@@ -5,7 +5,7 @@
       📞 Phone Friend
     </button>
     <button class="lifeline-button" [disabled]="gameService.lifelinesUsed.fiftyFifty" (click)="useFiftyFifty()">
-      50/50
+      🧩 50:50
     </button>
     <button class="lifeline-button" [disabled]="gameService.lifelinesUsed.audiencePoll" (click)="useAudiencePoll()">
       👥 Audience Poll
@@ -13,9 +13,9 @@
   </div>
 
   <h3 class="question-number" >Question {{ currentQuestionNumber }} of {{ gameService.totalQuestions }}</h3>
-  <h4>Correct so far: {{ totalCorrect }}</h4>
+  <h4 class="question-number">Correct so far: {{ totalCorrect }}</h4>
 
-  <!-- Pass [filteredOptions]="filteredOptions" for 50/50 -->
+  <!-- Pass [filte redOptions]="filteredOptions" for 50/50 -->
   <app-question
   [question]="gameService.getCurrentQuestion()"
   [filteredOptions]="filteredOptions"
