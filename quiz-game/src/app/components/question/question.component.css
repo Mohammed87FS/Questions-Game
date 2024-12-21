@@ -1,9 +1,6 @@
 /* Wrap the entire question area */
 .question-wrapper {
-  background: rgb(20, 20, 50);
-  border: 2px solid #00ffff;
-  border-radius: 15px;
-  box-shadow: 0 0 15px #00ffff;
+
   padding: 40px;
   margin: 25px 0;
   position: relative;
@@ -64,10 +61,10 @@
 }
 .question-text {
   font-size: 2rem;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.842);
   display: inline-block;
-  padding: 10px 15px;
+  padding: 20px 20px;
   border-radius: 10px;
-  border: 2px solid #00d8ff;
-  color: #ffd700; /* bright gold text */
+  border: 2px solid #097588;
+  color: #ffc400; /* bright gold text */
 }

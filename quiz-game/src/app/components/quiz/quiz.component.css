@@ -3,7 +3,7 @@
   display: block;
   min-height: 100vh;
   width: 100%;
-  background: radial-gradient(circle at center, #07001f 0%, #000000 80%);
+  background: radial-gradient(circle at center, #00000073 0%, #000000 80%);
   color: #ffffff;
   font-family: "Trebuchet MS", Arial, sans-serif;
   padding: 20px 0;
@@ -14,7 +14,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Arial', sans-serif;
-  background: linear-gradient(#000428, #004e92); /* Another dark gradient fallback */
+  background: linear-gradient(#7e819e, #6a8052); /* Another dark gradient fallback */
   color: #fff;
   /* Or a radial gradient:
      background: radial-gradient(circle at center, #06092e 0%, #000000 100%);
@@ -26,7 +26,7 @@ body {
   position: relative;
   max-width: 900px;
   margin: 40px auto;
-  background: rgba(15, 15, 35, 0.9);  /* or #0b193a if you prefer a solid color */
+  background: rgb(6, 1, 31);  /* or #0b193a if you prefer a solid color */
   border: 2px solid #00ffff;
   border-radius: 20px;
   box-shadow: 0 0 30px #00d8ff;
@@ -152,6 +152,7 @@ body {
   transform: translateY(-2px);
   color: #ffffff;
 }
+
 
 .question-number {
   /* Retro or arcade font */
