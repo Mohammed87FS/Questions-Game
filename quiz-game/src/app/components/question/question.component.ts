@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   template: `
     <div class="question-wrapper" *ngIf="question">
-      <h2 class="question-text">{{ question.question }}</h2>
+      <h2 class="question-text" *ngIf="showOptions">{{ question.question }}</h2>
       <div class="options-list" *ngIf="showOptions">
         <button
           class="option-button"
@@ -43,7 +43,7 @@ export class QuestionComponent {
     // Optionally, delay showing the options for an animated effect
     setTimeout(() => {
       this.showOptions = true; // Reveal options after a short delay
-    }, 1000); // Adjust the delay (in milliseconds) as needed
+    }, 7500); // Adjust the delay (in milliseconds) as needed
   }
 
   get displayOptions(): string[] {
