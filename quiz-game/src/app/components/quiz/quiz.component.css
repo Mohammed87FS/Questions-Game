@@ -152,9 +152,6 @@ body {
   transform: translateY(-2px);
   color: #ffffff;
 }
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-/* "Press Start 2P" is a free pixel/arcade-like font. 
-   You can choose any retro font from Google Fonts. */
 
 .question-number {
   /* Retro or arcade font */

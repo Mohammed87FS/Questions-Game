@@ -18,6 +18,8 @@ import { PopupComponent } from '../popup/popup.component';
   styleUrls: ['./quiz.component.css']
 })
 export class QuizComponent implements OnInit {
+  allQuestions: any[] = [];
+
   // Popup states
   showPopup = false;
   popupTitle = '';
@@ -35,6 +37,7 @@ export class QuizComponent implements OnInit {
   showResult = false;            
   correctAnswerSelected = false; 
   currentQuestionNumber = 1; 
+  correctIndex: number | null = null;
   totalCorrect = 0;          
 
   constructor(
@@ -44,17 +47,30 @@ export class QuizComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Load and init
-    const allQuestions = this.questionsService.getAllQuestions();
-    this.gameService.initGame(allQuestions);
+    // 1) Load from QuestionsService
+    this.allQuestions = this.questionsService.getAllQuestions();  // <— Key fix
 
+    // 2) Shuffle the answers in each question
+    this.shuffleAllQuestions();  
+
+    // 3) Initialize the game with the now-shuffled questions
+    this.gameService.initGame(this.allQuestions);
     this.audioService.playAudio('start');
 
     this.currentQuestionNumber = this.gameService.currentQuestionIndex + 1;
     this.totalCorrect = 0;
   }
+
+  shuffleAllQuestions() {
+    for (const q of this.allQuestions) {
+      q.options = this.shuffleArray(q.options);
+    }
+  }
+  private shuffleArray<T>(arr: T[]): T[] {
+    return arr.sort(() => Math.random() - 0.5);
+  }
+
   onAnswerSelected(index: number) {
-    // The user clicked option "index"
     this.selectedIndex = index;
     this.pendingCheck = true;
 
@@ -62,10 +78,13 @@ export class QuizComponent implements OnInit {
       const currentQ = this.gameService.getCurrentQuestion();
       if (!currentQ) return;
 
+      // Find out which option is correct
+      this.correctIndex = currentQ.options.findIndex((opt: string) => opt === currentQ.answer);
+
       const chosenOption = currentQ.options[index];
       this.correctAnswerSelected = (chosenOption === currentQ.answer);
 
-      // We’re now revealing correct/wrong
+      // Reveal correct/wrong
       this.pendingCheck = false;
       this.showResult = true;
 
@@ -79,7 +98,6 @@ export class QuizComponent implements OnInit {
       setTimeout(() => this.endQuestion(), 2000);
     }, 3000);
   }
-
 
   endQuestion() {
     if (this.correctAnswerSelected) {
@@ -96,10 +114,10 @@ export class QuizComponent implements OnInit {
     // Reset
     this.showResult = false;
     this.correctAnswerSelected = false;
- this.selectedIndex = null;  
-    // Reset 50/50 so the next question shows all 4 options
-    this.filteredOptions = null;
+    this.selectedIndex = null;  
+    this.filteredOptions = null;  // reset 50/50
   }
+
 
   // Phone Friend
   usePhoneFriend() {
@@ -185,20 +203,24 @@ export class QuizComponent implements OnInit {
 
     this.audioService.playAudio('gaveAnswer');
   }
-
-  // Closes the popup (phone friend, poll, etc.)
   closePopup() {
     this.showPopup = false;
     this.popupTitle = '';
     this.popupContent = '';
-    this.pollData = null; // reset poll data if you want
+    this.pollData = null;
   }
 
   // Restart
   restart() {
-    this.gameService.initGame(this.questionsService.getAllQuestions());
+    // 1) Reload or reuse the same question list from the service
+    this.allQuestions = this.questionsService.getAllQuestions(); // again, store them
+    this.shuffleAllQuestions(); // randomize the options
+
+    // 2) Re-init the game
+    this.gameService.initGame(this.allQuestions);
     this.audioService.playAudio('start');
 
+    // 3) Reset everything
     this.currentQuestionNumber = this.gameService.currentQuestionIndex + 1;
     this.totalCorrect = 0;
     this.showPopup = false;
@@ -208,7 +230,6 @@ export class QuizComponent implements OnInit {
     this.pollData = null;
   }
 
-  // Quick getter
   get isGameOver(): boolean {
     return this.gameService.gameOver;
   }
