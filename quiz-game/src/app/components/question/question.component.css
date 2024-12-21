@@ -36,6 +36,10 @@
   cursor: pointer;
   transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
   box-shadow: 0 0 10px #aa00ff;
+  /* Animation */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 5s forwards ease-in-out;
 }
 
 /* Hover effect */
@@ -67,4 +71,35 @@
   border-radius: 10px;
   border: 2px solid #097588;
   color: #ffc400; /* bright gold text */
+}
+
+/* Question Text */
+.question-text {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #ffd700; /* Golden */
+  text-shadow: 0 0 10px #ffd700;
+}
+
+/* Options List */
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+
+
+
+/* Fade-In Animation */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

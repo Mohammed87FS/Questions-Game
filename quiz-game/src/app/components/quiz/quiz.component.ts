@@ -43,6 +43,7 @@ export class QuizComponent implements OnInit {
   currentQuestionNumber = 1; 
   correctIndex: number | null = null;
   totalCorrect = 0;          
+  showOptions = false; // Property to control option visibility
 
   constructor(
     public gameService: GameService,
@@ -57,22 +58,20 @@ export class QuizComponent implements OnInit {
   }
 
   onStartGame() {
-    // Shuffle the options for each question if you want random answer orders
-    this.shuffleAllQuestions();
-
-    // Now actually initialize the game
-    this.gameService.initGame(this.allQuestions);
-
-    // User has started => reveal the quiz
-    this.gameStarted = true;
-
-    // Because the user clicked "Start," we can now safely try to play audio
-
-    // Set initial question number etc.
+    this.shuffleAllQuestions(); // Shuffle questions if needed
+    this.gameService.initGame(this.allQuestions); // Initialize the game
+    this.gameStarted = true; // Set game state to started
+  
     this.currentQuestionNumber = this.gameService.currentQuestionIndex + 1;
     this.totalCorrect = 0;
-    this.audioService.playAudio('start');
-
+  
+    // Play "start" audio, and after it ends, play "start_question" audio
+    this.audioService.playAudio('start', () => {
+      this.audioService.playAudio('start_question', () => {
+        // Reveal options or other UI after "start_question" finishes
+        this.showOptions = true; // Ensure you have a property to control option visibility
+      });
+    });
   }
 
   shuffleAllQuestions() {

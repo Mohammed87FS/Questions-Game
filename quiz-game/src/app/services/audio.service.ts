@@ -19,31 +19,46 @@ export class AudioService {
     }
   }
 
-  playAudio(type: 'start' | 'start_question' | 'correct' | 'wrong' | 'gaveAnswer'): void {
+  playAudio(
+    type: 'start' | 'start_question' | 'correct' | 'wrong' | 'gaveAnswer',
+    onEndedCallback?: () => void
+  ): void {
     if (!isPlatformBrowser(this.platformId)) return;
-    this.stopAllAudio();
+
+    this.stopAllAudio(); // Stop other audio before starting new one
+    let audioToPlay: HTMLAudioElement | null = null;
+
     switch (type) {
       case 'start':
-        this.audioStart?.play();
+        audioToPlay = this.audioStart;
         break;
-
       case 'start_question':
-        this.audioStartQuestion?.play();
+        audioToPlay = this.audioStartQuestion;
         break;
       case 'correct':
-        this.audioCorrect?.play();
+        audioToPlay = this.audioCorrect;
         break;
       case 'wrong':
-        this.audioWrong?.play();
+        audioToPlay = this.audioWrong;
         break;
       case 'gaveAnswer':
-        this.audioGaveAnswer?.play();
+        audioToPlay = this.audioGaveAnswer;
         break;
+    }
+
+    if (audioToPlay) {
+      audioToPlay.currentTime = 0; // Ensure the audio starts from the beginning
+      audioToPlay.play().catch(err => console.error('Audio playback error:', err));
+
+      // Attach the callback if provided
+      if (onEndedCallback) {
+        audioToPlay.onended = onEndedCallback;
+      }
     }
   }
 
   stopAllAudio(): void {
-    [this.audioStart, this.audioCorrect, this.audioWrong, this.audioGaveAnswer].forEach(a => {
+    [this.audioStart, this.audioStartQuestion, this.audioCorrect, this.audioWrong, this.audioGaveAnswer].forEach(a => {
       if (a) {
         a.pause();
         a.currentTime = 0;
