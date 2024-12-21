@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   template: `
     <div class="question-wrapper" *ngIf="question">
-      <h2>{{ question.question }}</h2>
+      <h2 class="question-text">{{ question.question }}</h2>
       <div class="options-list">
         <button
           class="option-button"

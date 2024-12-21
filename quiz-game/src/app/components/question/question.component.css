@@ -1,33 +1,15 @@
 /* Wrap the entire question area */
 .question-wrapper {
-  background: rgba(20, 20, 50, 0.8);
+  background: rgb(20, 20, 50);
   border: 2px solid #00ffff;
   border-radius: 15px;
   box-shadow: 0 0 15px #00ffff;
-  padding: 20px;
-  margin: 20px 0;
+  padding: 40px;
+  margin: 25px 0;
   position: relative;
 }
 
-/* Give a fancy border or glow behind the question text */
-.question-wrapper::before {
-  content: "";
-  position: absolute;
-  top: -15px;
-  left: -15px;
-  right: -15px;
-  bottom: -15px;
-  border: 2px solid #2e00ff;
-  border-radius: 20px;
-  box-shadow: 0 0 25px #2e00ff;
-  opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none;
-}
 
-.question-wrapper:hover::before {
-  opacity: 1;
-}
 
 /* Question text styling */
 .question-header h2 {
@@ -49,7 +31,7 @@
 .option-button {
   width: 80%;
   padding: 15px;
-  font-size: 1rem;
+  font-size: 2rem;
   background: #1b003a;
   color: #ffffff;
   border: 2px solid #aa00ff;
@@ -79,4 +61,13 @@
 .wrong-answer {
   background: #db2828 !important;
   box-shadow: 0 0 15px #db2828 !important;
+}
+.question-text {
+  font-size: 2rem;
+  background: rgba(0, 0, 0, 0.3);
+  display: inline-block;
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 2px solid #00d8ff;
+  color: #ffd700; /* bright gold text */
 }

@@ -12,7 +12,7 @@
     </button>
   </div>
 
-  <h3>Question {{ currentQuestionNumber }} of {{ gameService.totalQuestions }}</h3>
+  <h3 class="question-number" >Question {{ currentQuestionNumber }} of {{ gameService.totalQuestions }}</h3>
   <h4>Correct so far: {{ totalCorrect }}</h4>
 
   <!-- Pass [filteredOptions]="filteredOptions" for 50/50 -->
@@ -31,7 +31,7 @@
   <div *ngIf="isGameOver" class="game-over-screen">
     <h2>Game Over!</h2>
     <p>You got {{ totalCorrect }} out of {{ gameService.totalQuestions }}!</p>
-    <button (click)="restart()">Restart</button>
+    <button class="restart-button" (click)="restart()">Restart</button>
   </div>
 
   <app-popup
