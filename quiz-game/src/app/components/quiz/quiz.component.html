@@ -17,10 +17,16 @@
 
   <!-- Pass [filteredOptions]="filteredOptions" for 50/50 -->
   <app-question
-    [question]="gameService.getCurrentQuestion()"
-    [filteredOptions]="filteredOptions"
-    (answerSelected)="onAnswerSelected($event)"
-  ></app-question>
+  [question]="gameService.getCurrentQuestion()"
+  [filteredOptions]="filteredOptions"
+
+  [selectedIndex]="selectedIndex"
+  [pendingCheck]="pendingCheck"
+  [showResult]="showResult"
+  [correctAnswerSelected]="correctAnswerSelected"
+
+  (answerSelected)="onAnswerSelected($event)"
+></app-question>
 
   <div *ngIf="isGameOver" class="game-over-screen">
     <h2>Game Over!</h2>

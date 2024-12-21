@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
           class="option-button"
           *ngFor="let opt of displayOptions; let i = index"
           (click)="selectAnswer(i)"
+          [ngClass]="getOptionClass(i)"
         >
           {{ opt }}
         </button>
@@ -23,20 +24,42 @@ import { CommonModule } from '@angular/common';
 })
 export class QuestionComponent {
   @Input() question: any;
-  @Input() filteredOptions: string[] | null = null; // used for 50/50
+  @Input() filteredOptions: string[] | null = null;
+
+  // These come from QuizComponent
+  @Input() selectedIndex: number | null = null;
+  @Input() pendingCheck = false;
+  @Input() showResult = false;
+  @Input() correctAnswerSelected = false;
 
   @Output() answerSelected = new EventEmitter<number>();
 
   get displayOptions(): string[] {
-    // If we have 50/50 filteredOptions, show them
     if (this.filteredOptions && this.filteredOptions.length > 0) {
       return this.filteredOptions;
     }
-    // Otherwise, show the original 4 question options
     return this.question?.options || [];
   }
 
   selectAnswer(index: number) {
     this.answerSelected.emit(index);
+  }
+
+  getOptionClass(i: number): string {
+    // No selection yet
+    if (this.selectedIndex === null) return '';
+
+    // If user clicked this option, but we haven't revealed correct/wrong yet
+    if (this.pendingCheck && i === this.selectedIndex) {
+      return 'selected-pending'; // e.g. orange
+    }
+
+    // If we are revealing correct/wrong, check if this was the selected one
+    if (this.showResult && i === this.selectedIndex) {
+      // If user’s selection was correct, highlight green, otherwise red
+      return this.correctAnswerSelected ? 'correct-answer' : 'wrong-answer';
+    }
+
+    return '';
   }
 }

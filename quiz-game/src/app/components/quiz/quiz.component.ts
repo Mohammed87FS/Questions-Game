@@ -30,6 +30,7 @@ export class QuizComponent implements OnInit {
   pollData: { optionIndex: number; percentage: number }[] | null = null;
 
   // Basic question/score tracking
+  selectedIndex: number | null = null;
   pendingCheck = false;           
   showResult = false;            
   correctAnswerSelected = false; 
@@ -52,17 +53,19 @@ export class QuizComponent implements OnInit {
     this.currentQuestionNumber = this.gameService.currentQuestionIndex + 1;
     this.totalCorrect = 0;
   }
-
-  // Fired when user picks an answer in QuestionComponent
-  onAnswerSelected(selectedIndex: number) {
+  onAnswerSelected(index: number) {
+    // The user clicked option "index"
+    this.selectedIndex = index;
     this.pendingCheck = true;
+
     setTimeout(() => {
       const currentQ = this.gameService.getCurrentQuestion();
       if (!currentQ) return;
 
-      const chosenOption = currentQ.options[selectedIndex];
+      const chosenOption = currentQ.options[index];
       this.correctAnswerSelected = (chosenOption === currentQ.answer);
 
+      // We’re now revealing correct/wrong
       this.pendingCheck = false;
       this.showResult = true;
 
@@ -76,6 +79,7 @@ export class QuizComponent implements OnInit {
       setTimeout(() => this.endQuestion(), 2000);
     }, 3000);
   }
+
 
   endQuestion() {
     if (this.correctAnswerSelected) {
@@ -92,7 +96,7 @@ export class QuizComponent implements OnInit {
     // Reset
     this.showResult = false;
     this.correctAnswerSelected = false;
-
+ this.selectedIndex = null;  
     // Reset 50/50 so the next question shows all 4 options
     this.filteredOptions = null;
   }
