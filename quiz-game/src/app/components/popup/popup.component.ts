@@ -11,15 +11,24 @@ import { CommonModule } from '@angular/common';
         <h2>{{ title }}</h2>
         <p>{{ content }}</p>
 
-        <!-- If pollData is present, display bar chart -->
+        <!-- If pollData is present, display fancy bar chart -->
         <div class="poll-container" *ngIf="pollData">
           <div
             class="poll-row"
             *ngFor="let p of pollData; let i = index"
           >
-            <span class="poll-label">Option {{ p.optionIndex + 1 }}:</span>
-            <div class="poll-bar" [style.width.%]="p.percentage">
-              {{ p.percentage }}%
+            <!-- Display which option (like “Option 1”, “Option 2”, etc.) -->
+            <span class="poll-label"> </span>
+
+            <!-- The actual bar with fancy animations -->
+            <div class="poll-bar-outer">
+              <div
+                class="poll-bar-inner"
+                [style.width.%]="p.percentage"
+                [style.animationDelay]="i * 0.1 + 's'"
+              >
+                {{ p.percentage }}%
+              </div>
             </div>
           </div>
         </div>

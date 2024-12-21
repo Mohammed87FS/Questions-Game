@@ -76,16 +76,18 @@ body {
   border: 2px solid #c711e1;
   border-radius: 12px;
   padding: 10px 20px;
-  font-size: 1rem;
+  font-size: 1.7rem;
   cursor: pointer;
   transition: 0.3s ease;
   font-weight: bold;
   box-shadow: 0 0 8px #c711e1;
+  margin-bottom: 50px;
 }
 .lifeline-button:disabled {
   background-color: #555;
   cursor: not-allowed;
   box-shadow: none;
+ 
 }
 .lifeline-button:hover:not(:disabled) {
   background-color: #45068c;
@@ -110,8 +112,10 @@ body {
   text-shadow: 0 0 10px #ffc107;
 }
 .question-number {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
+  font-size: 1.4rem;
+  margin-bottom: 50px;
+  color: #00e1ffdc; 
+
 }
 
 /* 6) Game Over Screen */
