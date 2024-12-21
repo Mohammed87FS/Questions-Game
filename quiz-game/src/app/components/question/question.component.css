@@ -1,15 +1,82 @@
+/* Wrap the entire question area */
 .question-wrapper {
-    margin: 1rem 0;
-  }
-  
-  .options {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  button {
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-  }
-  
+  background: rgba(20, 20, 50, 0.8);
+  border: 2px solid #00ffff;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #00ffff;
+  padding: 20px;
+  margin: 20px 0;
+  position: relative;
+}
+
+/* Give a fancy border or glow behind the question text */
+.question-wrapper::before {
+  content: "";
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  right: -15px;
+  bottom: -15px;
+  border: 2px solid #2e00ff;
+  border-radius: 20px;
+  box-shadow: 0 0 25px #2e00ff;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.question-wrapper:hover::before {
+  opacity: 1;
+}
+
+/* Question text styling */
+.question-header h2 {
+  margin: 0 0 15px 0;
+  color: #ffea00; /* bright yellow */
+  font-size: 1.5rem;
+  text-shadow: 0 0 5px #ffea00;
+}
+
+/* The container for options */
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+/* Option buttons */
+.option-button {
+  width: 80%;
+  padding: 15px;
+  font-size: 1rem;
+  background: #1b003a;
+  color: #ffffff;
+  border: 2px solid #aa00ff;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+  box-shadow: 0 0 10px #aa00ff;
+}
+
+/* Hover effect */
+.option-button:hover {
+  background: #32006f;
+  box-shadow: 0 0 20px #aa00ff;
+  transform: translateY(-2px);
+}
+
+/* Example: highlight the selected or correct answer with utility classes */
+.selected-pending {
+  background: #ffc400 !important;
+  box-shadow: 0 0 15px #ffc400 !important;
+  color: #000 !important;
+}
+.correct-answer {
+  background: #21ba45 !important;
+  box-shadow: 0 0 15px #21ba45 !important;
+}
+.wrong-answer {
+  background: #db2828 !important;
+  box-shadow: 0 0 15px #db2828 !important;
+}

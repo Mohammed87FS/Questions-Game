@@ -1,23 +1,38 @@
-<app-question
-  [question]="gameService.getCurrentQuestion()"
-  (answerSelected)="onAnswerSelected($event)"
-></app-question>
+<div class="quiz-container">
+  <!-- Lifelines at the top -->
+  <div class="lifelines">
+    <button class="lifeline-button" (click)="usePhoneFriend()">
+      📞 Phone Friend
+    </button>
+    <button class="lifeline-button" (click)="useFiftyFifty()">
+      50/50
+    </button>
+    <button class="lifeline-button" (click)="useAudiencePoll()">
+      👥 Audience Poll
+    </button>
+  </div>
 
-<div *ngIf="gameService.gameOver">
-  <p>Game Over!</p>
-  <button (click)="restart()">Restart</button>
+  <h3>Question {{ currentQuestionNumber }} of {{ gameService.totalQuestions }}</h3>
+  <h4>Correct so far: {{ totalCorrect }}</h4>
+
+  <!-- Pass [filteredOptions]="filteredOptions" for 50/50 -->
+  <app-question
+    [question]="gameService.getCurrentQuestion()"
+    [filteredOptions]="filteredOptions"
+    (answerSelected)="onAnswerSelected($event)"
+  ></app-question>
+
+  <div *ngIf="isGameOver" class="game-over-screen">
+    <h2>Game Over!</h2>
+    <p>You got {{ totalCorrect }} out of {{ gameService.totalQuestions }}!</p>
+    <button (click)="restart()">Restart</button>
+  </div>
+
+  <app-popup
+    [visible]="showPopup"
+    [title]="popupTitle"
+    [content]="popupContent"
+    [pollData]="pollData"
+    (closePopup)="closePopup()"
+  ></app-popup>
 </div>
-
-<app-popup
-  [visible]="showPopup"
-  [title]="popupTitle"
-  [content]="popupContent"
-  (closePopup)="closePopup()"
-></app-popup>
-
-<button
-  (click)="usePhoneFriend()"
-  [disabled]="gameService.lifelinesUsed.phoneFriend"
->
-  Phone Friend
-</button>

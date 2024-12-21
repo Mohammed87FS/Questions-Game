@@ -1,8 +1,13 @@
-<div class="popup-backdrop" *ngIf="visible">
-    <div class="popup-content">
-      <h2>{{ title }}</h2>
-      <p>{{ content }}</p>
-      <button (click)="close()">Close</button>
+<div class="floating-popup-overlay" *ngIf="visible">
+  <div class="floating-popup">
+    <h2>{{ title }}</h2>
+    <p>{{ content }}</p>
+
+    <!-- If you have poll data or phone friend logic, you can show it here -->
+    <div *ngIf="pollData" class="poll-results">
+      <!-- poll bars, etc. -->
     </div>
+
+    <button class="close-button" (click)="close()">Close</button>
   </div>
-  
+</div>
