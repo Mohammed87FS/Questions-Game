@@ -108,7 +108,7 @@ export class QuizComponent implements OnInit {
         this.audioService.playAudio('wrong');
       }
 
-      setTimeout(() => this.endQuestion(), 2000);
+      setTimeout(() => this.endQuestion(), 5000);
     }, 3000);
   }
 

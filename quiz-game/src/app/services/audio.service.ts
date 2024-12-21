@@ -11,8 +11,8 @@ export class AudioService {
   constructor(@Inject(PLATFORM_ID) private platformId: object) {
     if (isPlatformBrowser(this.platformId)) {
       this.audioStart = new Audio('assets/audio/start_question.mp3');
-      this.audioCorrect = new Audio('assets/audio/correct.m4a');
-      this.audioWrong = new Audio('assets/audio/wrong.m4a');
+      this.audioCorrect = new Audio('assets/audio/correct.mp4');
+      this.audioWrong = new Audio('assets/audio/loss.m4a');
       this.audioGaveAnswer = new Audio('assets/audio/gave_answer.m4a');
     }
   }
