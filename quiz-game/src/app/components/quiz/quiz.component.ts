@@ -67,11 +67,12 @@ export class QuizComponent implements OnInit {
     this.gameStarted = true;
 
     // Because the user clicked "Start," we can now safely try to play audio
-    this.audioService.playAudio('start');
 
     // Set initial question number etc.
     this.currentQuestionNumber = this.gameService.currentQuestionIndex + 1;
     this.totalCorrect = 0;
+    this.audioService.playAudio('start');
+
   }
 
   shuffleAllQuestions() {
