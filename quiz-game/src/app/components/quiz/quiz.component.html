@@ -1,19 +1,20 @@
 <div class="quiz-container">
+
+
+  <h5 class="question-number" >  {{ gameService.totalQuestions }} / {{ currentQuestionNumber }} السؤال</h5>
   <!-- Lifelines at the top -->
   <div class="lifelines">
     <button class="lifeline-button" [disabled]="gameService.lifelinesUsed.phoneFriend" (click)="usePhoneFriend()">
-      📞 Phone Friend
+      📞 صديقة
     </button>
     <button class="lifeline-button" [disabled]="gameService.lifelinesUsed.fiftyFifty" (click)="useFiftyFifty()">
       🧩 50:50
     </button>
     <button class="lifeline-button" [disabled]="gameService.lifelinesUsed.audiencePoll" (click)="useAudiencePoll()">
-      👥 Audience Poll
+      👥 جمهور
     </button>
   </div>
 
-  <h3 class="question-number" >Question {{ currentQuestionNumber }} of {{ gameService.totalQuestions }}</h3>
-  <h4 class="question-number">Correct so far: {{ totalCorrect }}</h4>
 
   <!-- Pass [filte redOptions]="filteredOptions" for 50/50 -->
   <app-question
