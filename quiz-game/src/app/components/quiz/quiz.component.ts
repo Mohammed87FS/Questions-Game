@@ -86,6 +86,7 @@ export class QuizComponent implements OnInit {
   onAnswerSelected(index: number) {
     this.selectedIndex = index;
     this.pendingCheck = true;
+    this.audioService.playAudio('gaveAnswer');
 
     setTimeout(() => {
       const currentQ = this.gameService.getCurrentQuestion();
@@ -109,7 +110,7 @@ export class QuizComponent implements OnInit {
       }
 
       setTimeout(() => this.endQuestion(), 5000);
-    }, 3000);
+    }, 5000);
   }
 
   endQuestion() {
@@ -148,7 +149,7 @@ export class QuizComponent implements OnInit {
     this.popupContent = `يقول صديقك إن الإجابة هي الخيار رقم ${correctIndex + 1}`;
     this.showPopup = true;
 
-    this.audioService.playAudio('gaveAnswer');
+   
   }
 
   // Fifty-Fifty
@@ -214,7 +215,7 @@ export class QuizComponent implements OnInit {
     this.popupContent =  '';
     this.showPopup = true;
 
-    this.audioService.playAudio('gaveAnswer');
+
   }
   closePopup() {
     this.showPopup = false;
