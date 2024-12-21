@@ -113,7 +113,7 @@ export class QuizComponent implements OnInit {
       (opt: string) => opt === currentQ.answer
     );
 
-    this.popupTitle = '📞 الاتصال بصديق';
+    this.popupTitle = '';
     this.popupContent = `يقول صديقك إن الإجابة هي الخيار رقم ${correctIndex + 1}`;
     this.showPopup = true;
 
@@ -179,8 +179,8 @@ export class QuizComponent implements OnInit {
     this.pollData = poll;
 
     // Show popup
-    this.popupTitle = '👥 Audience Poll';
-    this.popupContent = 'Results from the audience:';
+    this.popupTitle = ' التصويت  ';
+    this.popupContent =  '';
     this.showPopup = true;
 
     this.audioService.playAudio('gaveAnswer');

@@ -4,7 +4,8 @@
    .popup-overlay {
     position: fixed;
     inset: 0; /* shorthand for top:0, right:0, bottom:0, left:0 */
-    background: rgba(0, 0, 0, 0.85); /* Dark overlay */
+    background: rgba(0, 0, 0, 0.3); /* Dark overlay */
+    backdrop-filter: blur(10px);  
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,13 +17,13 @@
      ======================= */
   .popup-content {
     position: relative; /* so we can absolutely position the close button if desired */
-    background: linear-gradient(135deg, #070707, #1c065c);
-    border: 3px solid #00ffcc;
+    background: linear-gradient(135deg, #020635, #000000);
+    border: 3px solid #0b606b;
     border-radius: 15px;
-  
+  font-size: 2rem;
     color: #fff;
-    width: 90%;
-    max-width: 500px; /* slightly bigger so it feels less cramped */
+    width: 100%;
+    max-width: 700px; /* slightly bigger so it feels less cramped */
     padding: 30px 30px 50px;
     text-align: center;
     font-family: 'Arial', sans-serif;
@@ -65,18 +66,18 @@
   
   /* Poll label: "Option 1", etc. */
   .poll-label {
-    font-size: 1.1rem;
+
     font-weight: bold;
-    color: #00ffcc;
+    color: #000000;
     margin-bottom: 5px;
-    text-shadow: 0 0 5px #00ffcc;
+    text-shadow: 0 0 5px #000000;
   }
   
   /* Outer track for the bar */
   .poll-bar-outer {
     width: 100%;
     background: #000000;
-    border: 2px solid #00ffcc;
+    border: 2px solid #041b17;
     border-radius: 10px;
     overflow: hidden;
     position: relative;
@@ -87,16 +88,16 @@
      4) Animated Bar Fill
      ======================= */
   .poll-bar-inner {
-    background: linear-gradient(90deg, #00e0ff 0%, #009966 100%);
+    background: linear-gradient(90deg, #f700ff 0%, #060122 100%);
     color: #fff;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     font-weight: bold;
     text-align: right;
     padding-right: 8px;
     height: 32px;
     line-height: 32px; /* vertically center text */
     border-radius: 10px 0 0 10px;
-    box-shadow: 0 0 15px rgba(0, 255, 153, 0.6);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -125,14 +126,14 @@
    ======================= */
 .close-button {
   margin-top: 30px; /* space above it */
-  background-color: #ff3333;
+  background-color: #470055;
   color: #fff;
   border: none;
   padding: 10px 20px;
   border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
-  box-shadow: 0 0 8px #ff3333;
+  box-shadow: 0 0 8px #000000;
   transition: background 0.2s, transform 0.2s;
 
   /* Centering the button horizontally */
@@ -142,6 +143,6 @@
 }
 
 .close-button:hover {
-  background-color: #cc0000;
+  background-color: #630063;
   transform: scale(1.05);
 }
