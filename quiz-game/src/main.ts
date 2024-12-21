@@ -1,6 +1,16 @@
+// src/main.ts
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
 
-bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
+// Any providers you need at root level can go here
+import { AudioService } from './app/services/audio.service';
+import { GameService } from './app/services/game.service';
+import { QuestionsService } from './app/services/questions.service';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    AudioService,
+    GameService,
+    QuestionsService,
+  ],
+}).catch((err) => console.error(err));

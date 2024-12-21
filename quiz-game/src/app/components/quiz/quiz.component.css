@@ -270,12 +270,22 @@
 
 /* Game Over Screen */
 .game-over-screen {
-  background-color: #222;
+  background-color: #4a0000;
   border: 3px solid #290370;
   padding: 30px;
   border-radius: 15px;
   text-align: center;
   color: #fff;
+}
+
+.win {
+  background-color: #4caf50; 
+  color: white;
+}
+
+.lose {
+  background-color: #f44336; 
+  color: white;
 }
 
 .restart-button {
