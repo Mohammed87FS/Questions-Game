@@ -1,13 +1,13 @@
 <div class="quiz-container">
   <!-- Lifelines at the top -->
   <div class="lifelines">
-    <button class="lifeline-button" (click)="usePhoneFriend()">
+    <button class="lifeline-button" [disabled]="gameService.lifelinesUsed.phoneFriend" (click)="usePhoneFriend()">
       📞 Phone Friend
     </button>
-    <button class="lifeline-button" (click)="useFiftyFifty()">
+    <button class="lifeline-button" [disabled]="gameService.lifelinesUsed.fiftyFifty" (click)="useFiftyFifty()">
       50/50
     </button>
-    <button class="lifeline-button" (click)="useAudiencePoll()">
+    <button class="lifeline-button" [disabled]="gameService.lifelinesUsed.audiencePoll" (click)="useAudiencePoll()">
       👥 Audience Poll
     </button>
   </div>

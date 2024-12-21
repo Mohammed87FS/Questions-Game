@@ -47,10 +47,10 @@
 .quiz-container::after {
   width: 500px;
   height: 500px;
-  bottom: -250px;
+  bottom: -500px;
   left: 50%;
   transform: translateX(-50%);
-  box-shadow: 0 0 40px #ff00ff;
+  box-shadow: 0 0 10px #ffffff;
 }
 
 /* Lifelines bar */
@@ -128,35 +128,3 @@
   transform: translateY(-2px);
 }
 
-/* Example: add a pulsing glow to the container on hover */
-.quiz-container:hover::before {
-  width: 850px;
-  height: 850px;
-  box-shadow: 0 0 50px #00ffff;
-}
-.quiz-container:hover::after {
-  width: 550px;
-  height: 550px;
-  box-shadow: 0 0 60px #ff00ff;
-}
-
-:host {
-  display: block;
-  width: 100%;
-  min-height: 100vh;
-  background: radial-gradient(#07001f, #000000);
-  color: #fff;
-  font-family: "Trebuchet MS", Arial, sans-serif;
-  padding: 20px 0;
-}
-.quiz-container {
-  max-width: 900px;
-  margin: auto;
-  background: rgba(15, 15, 35, 0.8);
-  border: 2px solid #00ffff;
-  border-radius: 15px;
-  box-shadow: 0 0 20px #00ffff;
-  padding: 30px;
-  text-align: center;
-}
-/* ...any other styling for lifelines, game-over, etc. */
