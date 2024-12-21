@@ -152,3 +152,31 @@ body {
   transform: translateY(-2px);
   color: #ffffff;
 }
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+/* "Press Start 2P" is a free pixel/arcade-like font. 
+   You can choose any retro font from Google Fonts. */
+
+.question-number {
+  /* Retro or arcade font */
+  font-family: 'Press Start 2P', monospace;
+  font-size: 2.4rem; /* adjust as needed */
+
+  /* A gradient text effect */
+  background: linear-gradient(90deg, #4901ce, #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* Neon-like glow shadows */
+  text-shadow:
+    0 0 2px #b44f0b,
+    0 0 5px rgba(255, 123, 0, 0.822),
+ 
+    0 0 20px rgb(168, 33, 23);
+
+  /* Slight spacing, if desired */
+  margin: 0;
+  padding: 50px 0;
+  text-align: center;
+  text-transform: uppercase; /* optional, for a retro vibe */
+  letter-spacing: 1px;       /* optional, spacing between letters */
+}
